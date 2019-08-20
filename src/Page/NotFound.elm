@@ -61,10 +61,6 @@ text str =
 
 view : SharedState -> Model -> Element Msg
 view sharedState model =
-<<<<<<< HEAD
-    Container.simple [] sadness
-        |> UiFramework.toElement (toContext sharedState)
-=======
     let
         context =
             { device = sharedState.device
@@ -74,7 +70,6 @@ view sharedState model =
     in
     Container.simple [] sadness
         |> toElement context
->>>>>>> 34f65b78b4b1db6c5c3335b0d38f9ebe062d3611
 
 
 sadness : UiElement Msg
