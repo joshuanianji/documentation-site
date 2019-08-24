@@ -53,11 +53,6 @@ toContext sharedState =
 -- VIEW
 
 
-text : String -> UiElement Msg
-text str =
-    UiFramework.uiText (\_ -> str)
-
-
 view : SharedState -> Model -> Element Msg
 view sharedState model =
     UiFramework.uiColumn
@@ -84,10 +79,10 @@ header =
                 , Font.color (Element.rgb 1 1 1)
                 ]
                 [ Typography.display4 [] <|
-                    UiFramework.uiParagraph [] [ text "Getting Started" ]
+                    UiFramework.uiParagraph [] [ Util.text "Getting Started" ]
                 , UiFramework.uiParagraph []
                     [ Typography.textLead [] <|
-                        text "An overview of the Elm Ui Bootstrap Framework, how to use it, and some examples."
+                        Util.text "An overview of the Elm Ui Bootstrap Framework, how to use it, and some examples."
                     ]
                 ]
     in
@@ -106,9 +101,13 @@ content =
     Container.simple [] <|
         UiFramework.uiColumn
             [ width fill ]
-            [ Typography.h1 [] (text "Quick Start")
+            [ Typography.h1 [] (Util.text "Quick Start")
             , setupCode
-            , Typography.h1 [] (text "Module Code")
+            , Typography.h1 [] (Util.text "Module Code")
+            , UiFramework.uiParagraph []
+                [
+                    Util.text "Elm Ui Bootstrap requires a the full model-view-update architecture to work, because of the context architexture. Below is the not updated boilerplate code to start off a simple project."
+                ]
             , moduleCode
             ]
 

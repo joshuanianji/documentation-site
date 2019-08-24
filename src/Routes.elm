@@ -9,6 +9,16 @@ type Route
     | GettingStarted
     | NotFound
     | Button
+    | Alert
+    | Badge
+    | Container
+    | Dropdown
+    | Icon
+    | Navbar
+    | Pagination
+    | Table
+    | Toasty
+    | Typography
 
 
 
@@ -28,6 +38,36 @@ toUrlString route =
 
                 Button ->
                     [ "button" ]
+
+                Alert ->
+                    [ "alert" ]
+
+                Badge ->
+                    [ "Badge" ]
+
+                Container ->
+                    [ "Container" ]
+
+                Dropdown ->
+                    [ "Dropdown" ]
+
+                Icon ->
+                    [ "Icon" ]
+
+                Navbar ->
+                    [ "Navbar" ]
+
+                Pagination ->
+                    [ "Pagination" ]
+
+                Table ->
+                    [ "Table" ]
+
+                Toasty ->
+                    [ "Toasty" ]
+
+                Typography ->
+                    [ "Typography" ]
 
                 NotFound ->
                     [ "oops" ]
@@ -56,4 +96,14 @@ urlParser =
         [ Url.map Home Url.top
         , Url.map GettingStarted (Url.s "getting-started")
         , Url.map Button (Url.s "button")
+        , Url.map Badge (Url.s "Badge")
+        , Url.map Container (Url.s "Container")
+        , Url.map Dropdown (Url.s "Dropdown")
+        , Url.map Icon (Url.s "Icon")
+        , Url.map Navbar (Url.s "Navbar")
+        , Url.map Pagination (Url.s "Pagination")
+        , Url.map Table (Url.s "Table")
+        , Url.map Toasty (Url.s "Toasty")
+        , Url.map Typography (Url.s "Typography")
+        , Url.map Alert (Url.s "alert")
         ]

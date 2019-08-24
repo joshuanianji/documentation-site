@@ -6,7 +6,7 @@ pre > code.hljs{
     font-size: 75%;
     padding: 1.5rem;
     border-radius: .25rem;
-    width: auto;
+    width: fill;
     color : #292b2c;
     background-color: #f7f7f9;
 }

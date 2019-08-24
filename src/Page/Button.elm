@@ -1,9 +1,9 @@
-module Page.Button exposing (Context, Model, Msg(..), content, init, moduleCode, setupCode, toContext, update, view)
+module Page.Button exposing (Context, Model, Msg(..), init, update, view)
 
 {-| Button component
 -}
 
-import Component exposing (PageContent)
+import Browser.Navigation as Navigation
 import Element exposing (Color, Element, fill, height, width)
 import Element.Background as Background
 import Element.Font as Font
@@ -68,10 +68,17 @@ view sharedState model =
             { title = "Buttons"
             , description = "Click Click Click Click Click Click Click Click Click Click"
             }
-        , Container.simple [] <|
-            UiFramework.uiRow []
-                [ Container.simple [ width <| Element.fillPortion 1 ] <| componentNavbar Routes.Button
-                , Container.simple [ width <| Element.fillPortion 5 ] <| content sharedState
+        , Container.simple
+            [ Element.paddingXY 0 64 ]
+          <|
+            UiFramework.uiRow [ width fill ]
+                [ Container.simple
+                    [ width <| Element.fillPortion 1
+                    , height fill
+                    ]
+                  <|
+                    componentNavbar NavigateTo Routes.Button
+                , Container.simple [ width <| Element.fillPortion 6 ] <| content sharedState
                 ]
         ]
         |> UiFramework.toElement (toContext sharedState)
@@ -82,18 +89,13 @@ content sharedState =
     UiFramework.uiColumn
         [ width fill
         , Element.spacing 64
-        , Element.paddingXY 0 64
         ]
         [ basicButtons
-        , setupCode
+        , buttonRoles
+        , buttonRolesCode
         , Typography.h1 [] (Util.text "Module Code")
         , moduleCode
         ]
-        |> Container.simple []
-
-
-
--- showing the 6 predefined roles and such
 
 
 basicButtons : UiElement Msg
@@ -104,7 +106,26 @@ basicButtons =
         ]
         [ Typography.h1 [] (Util.text "Basic Buttons")
         , UiFramework.uiParagraph []
-            [ Util.text "Bootstrap offers 6 roles a button can have" ]
+            [ Util.text "Default options for the buttons are as follows:" ]
+        , UiFramework.uiWrappedRow
+            [ Element.spacing 4 ]
+            [ Button.simple NoOp "Default" ]
+        ]
+
+
+
+-- showing the 6 predefined roles and such
+
+
+buttonRoles : UiElement Msg
+buttonRoles =
+    UiFramework.uiColumn
+        [ width fill
+        , Element.spacing 32
+        ]
+        [ Typography.h1 [] (Util.text "Basic Buttons")
+        , UiFramework.uiParagraph []
+            [ Util.text "Bootstrap offers 6 roles for a button, as well as a \"light\" and \"dark\" role." ]
         , UiFramework.uiWrappedRow
             [ Element.spacing 4 ]
             (List.map
@@ -119,17 +140,32 @@ basicButtons =
         ]
 
 
-setupCode : UiElement Msg
-setupCode =
+buttonRolesCode : UiElement Msg
+buttonRolesCode =
     """
-UiFramework.uiRow [ Element.spacing 4 ] 
-    [ Button.default
-        |> Button.withLabel name
-        |> Button.withRole role
-        |> Button.view
-    ]
+UiFramework.uiRow 
+    [ Element.spacing 4 ] 
+    (List.map
+        (\\( role, name ) ->
+            Button.default
+                |> Button.withLabel name
+                |> Button.withRole role
+                |> Button.view
+        )
+        rolesAndNames
+    )
 
-    """
+rolesAndNames : List ( Role, String )
+rolesAndNames =
+    [ ( Primary, "Primary" )
+    , ( Secondary, "Secondary" )
+    , ( Success, "Success" )
+    , ( Info, "Info" )
+    , ( Warning, "Warning" )
+    , ( Danger, "Danger" )
+    , ( Light, "Light" )
+    , ( Dark, "Dark" )
+    ]"""
         |> Util.highlightCode "elm"
         |> (\elem -> \_ -> elem)
         |> UiFramework.fromElement
@@ -178,6 +214,7 @@ rolesAndNames =
 
 type Msg
     = NoOp
+    | NavigateTo Routes.Route
 
 
 update : SharedState -> Msg -> Model -> ( Model, Cmd Msg, SharedStateUpdate )
@@ -185,3 +222,6 @@ update sharedState msg model =
     case msg of
         NoOp ->
             ( model, Cmd.none, NoUpdate )
+
+        NavigateTo route ->
+            ( model, Navigation.pushUrl sharedState.navKey (Routes.toUrlString route), NoUpdate )

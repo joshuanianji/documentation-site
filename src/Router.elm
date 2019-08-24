@@ -8,10 +8,20 @@ import Element.Events as Events
 import Element.Font as Font
 import FontAwesome.Styles
 import Html exposing (Html)
+import Page.Alert as Alert
+import Page.Badge as Badge
 import Page.Button as Button
+import Page.Container as Container
+import Page.Dropdown as Dropdown
 import Page.GettingStarted as GettingStarted
 import Page.Home as Home
+import Page.Icon as Icon
+import Page.Navbar as Navbar
 import Page.NotFound as NotFound
+import Page.Pagination as Pagination
+import Page.Table as Table
+import Page.Toasty as Toasty
+import Page.Typography as Typography
 import Routes exposing (Route(..))
 import SharedState exposing (SharedState, SharedStateUpdate, Theme(..))
 import Task
@@ -19,7 +29,7 @@ import Themes.Darkly exposing (darklyThemeConfig)
 import Themes.Materia exposing (materiaThemeConfig)
 import UiFramework exposing (WithContext, toElement)
 import UiFramework.Configuration exposing (defaultThemeConfig)
-import UiFramework.Navbar as Navbar
+import UiFramework.Navbar
 import UiFramework.Types exposing (Role(..))
 import Url
 
@@ -53,6 +63,16 @@ type Page
     = HomePage Home.Model
     | GettingStartedPage GettingStarted.Model
     | ButtonPage Button.Model
+    | AlertPage Alert.Model
+    | BadgePage Badge.Model
+    | ContainerPage Container.Model
+    | DropdownPage Dropdown.Model
+    | IconPage Icon.Model
+    | NavbarPage Navbar.Model
+    | PaginationPage Pagination.Model
+    | TablePage Table.Model
+    | ToastyPage Toasty.Model
+    | TypographyPage Typography.Model
     | NotFoundPage NotFound.Model
 
 
@@ -111,6 +131,36 @@ tabBarTitle model =
         ButtonPage _ ->
             "Button"
 
+        AlertPage _ ->
+            "Alert"
+
+        BadgePage _ ->
+            "Badge"
+
+        ContainerPage _ ->
+            "Container"
+
+        DropdownPage _ ->
+            "Dropdown"
+
+        IconPage _ ->
+            "Icon"
+
+        NavbarPage _ ->
+            "Navbar"
+
+        PaginationPage _ ->
+            "Pagination"
+
+        TablePage _ ->
+            "Table"
+
+        ToastyPage _ ->
+            "Toasty"
+
+        TypographyPage _ ->
+            "Typography"
+
         NotFoundPage _ ->
             "Not Found"
 
@@ -159,27 +209,27 @@ navbar model sharedState =
                 [ Element.text "Elm Ui Bootstrap" ]
 
         homeItem =
-            Navbar.linkItem (NavigateTo GettingStarted)
-                |> Navbar.withMenuTitle "Getting Started"
+            UiFramework.Navbar.linkItem (NavigateTo GettingStarted)
+                |> UiFramework.Navbar.withMenuTitle "Getting Started"
 
         buttonsItem =
-            Navbar.linkItem (NavigateTo Button)
-                |> Navbar.withMenuTitle "Modules"
+            UiFramework.Navbar.linkItem (NavigateTo Button)
+                |> UiFramework.Navbar.withMenuTitle "Modules"
 
         examplesItem =
-            Navbar.linkItem NoOp
-                |> Navbar.withMenuTitle "Examples"
+            UiFramework.Navbar.linkItem NoOp
+                |> UiFramework.Navbar.withMenuTitle "Examples"
     in
-    Navbar.default ToggleMenu
-        |> Navbar.withBrand brand
-        |> Navbar.withBackground Light
-        |> Navbar.withMenuItems
+    UiFramework.Navbar.default ToggleMenu
+        |> UiFramework.Navbar.withBrand brand
+        |> UiFramework.Navbar.withBackground Light
+        |> UiFramework.Navbar.withMenuItems
             [ homeItem
             , buttonsItem
             , examplesItem
             ]
-        |> Navbar.withExtraAttrs []
-        |> Navbar.view navbarState
+        |> UiFramework.Navbar.withExtraAttrs []
+        |> UiFramework.Navbar.view navbarState
         |> UiFramework.toElement context
 
 
@@ -198,6 +248,46 @@ content model sharedState =
             Button.view sharedState pageModel
                 |> Element.map ButtonMsg
 
+        AlertPage pageModel ->
+            Alert.view sharedState pageModel
+                |> Element.map AlertMsg
+
+        BadgePage pageModel ->
+            Badge.view sharedState pageModel
+                |> Element.map BadgeMsg
+
+        ContainerPage pageModel ->
+            Container.view sharedState pageModel
+                |> Element.map ContainerMsg
+
+        DropdownPage pageModel ->
+            Dropdown.view sharedState pageModel
+                |> Element.map DropdownMsg
+
+        IconPage pageModel ->
+            Icon.view sharedState pageModel
+                |> Element.map IconMsg
+
+        NavbarPage pageModel ->
+            Navbar.view sharedState pageModel
+                |> Element.map NavbarMsg
+
+        PaginationPage pageModel ->
+            Pagination.view sharedState pageModel
+                |> Element.map PaginationMsg
+
+        TablePage pageModel ->
+            Table.view sharedState pageModel
+                |> Element.map TableMsg
+
+        ToastyPage pageModel ->
+            Toasty.view sharedState pageModel
+                |> Element.map ToastyMsg
+
+        TypographyPage pageModel ->
+            Typography.view sharedState pageModel
+                |> Element.map TypographyMsg
+
         NotFoundPage pageModel ->
             NotFound.view sharedState pageModel
                 |> Element.map NotFoundMsg
@@ -213,6 +303,16 @@ type Msg
     | HomeMsg Home.Msg
     | GettingStartedMsg GettingStarted.Msg
     | ButtonMsg Button.Msg
+    | AlertMsg Alert.Msg
+    | BadgeMsg Badge.Msg
+    | ContainerMsg Container.Msg
+    | DropdownMsg Dropdown.Msg
+    | IconMsg Icon.Msg
+    | NavbarMsg Navbar.Msg
+    | PaginationMsg Pagination.Msg
+    | TableMsg Table.Msg
+    | ToastyMsg Toasty.Msg
+    | TypographyMsg Typography.Msg
     | NotFoundMsg NotFound.Msg
     | SelectTheme Theme
     | ToggleDropdown
@@ -255,6 +355,46 @@ update sharedState msg model =
         ( ButtonMsg subMsg, ButtonPage subModel ) ->
             Button.update sharedState subMsg subModel
                 |> updateWith ButtonPage ButtonMsg model
+
+        ( AlertMsg subMsg, AlertPage subModel ) ->
+            Alert.update sharedState subMsg subModel
+                |> updateWith AlertPage AlertMsg model
+
+        ( BadgeMsg subMsg, BadgePage subModel ) ->
+            Badge.update sharedState subMsg subModel
+                |> updateWith BadgePage BadgeMsg model
+
+        ( ContainerMsg subMsg, ContainerPage subModel ) ->
+            Container.update sharedState subMsg subModel
+                |> updateWith ContainerPage ContainerMsg model
+
+        ( DropdownMsg subMsg, DropdownPage subModel ) ->
+            Dropdown.update sharedState subMsg subModel
+                |> updateWith DropdownPage DropdownMsg model
+
+        ( IconMsg subMsg, IconPage subModel ) ->
+            Icon.update sharedState subMsg subModel
+                |> updateWith IconPage IconMsg model
+
+        ( NavbarMsg subMsg, NavbarPage subModel ) ->
+            Navbar.update sharedState subMsg subModel
+                |> updateWith NavbarPage NavbarMsg model
+
+        ( PaginationMsg subMsg, PaginationPage subModel ) ->
+            Pagination.update sharedState subMsg subModel
+                |> updateWith PaginationPage PaginationMsg model
+
+        ( TableMsg subMsg, TablePage subModel ) ->
+            Table.update sharedState subMsg subModel
+                |> updateWith TablePage TableMsg model
+
+        ( ToastyMsg subMsg, ToastyPage subModel ) ->
+            Toasty.update sharedState subMsg subModel
+                |> updateWith ToastyPage ToastyMsg model
+
+        ( TypographyMsg subMsg, TypographyPage subModel ) ->
+            Typography.update sharedState subMsg subModel
+                |> updateWith TypographyPage TypographyMsg model
 
         ( NotFoundMsg subMsg, NotFoundPage subModel ) ->
             NotFound.update sharedState subMsg subModel
@@ -315,6 +455,36 @@ navigateTo route sharedState model =
 
         Button ->
             Button.init |> initWith ButtonPage ButtonMsg model SharedState.NoUpdate
+
+        Alert ->
+            Alert.init |> initWith AlertPage AlertMsg model SharedState.NoUpdate
+
+        Badge ->
+            Badge.init |> initWith BadgePage BadgeMsg model SharedState.NoUpdate
+
+        Container ->
+            Container.init |> initWith ContainerPage ContainerMsg model SharedState.NoUpdate
+
+        Dropdown ->
+            Dropdown.init |> initWith DropdownPage DropdownMsg model SharedState.NoUpdate
+
+        Icon ->
+            Icon.init |> initWith IconPage IconMsg model SharedState.NoUpdate
+
+        Navbar ->
+            Navbar.init |> initWith NavbarPage NavbarMsg model SharedState.NoUpdate
+
+        Pagination ->
+            Pagination.init |> initWith PaginationPage PaginationMsg model SharedState.NoUpdate
+
+        Table ->
+            Table.init |> initWith TablePage TableMsg model SharedState.NoUpdate
+
+        Toasty ->
+            Toasty.init |> initWith ToastyPage ToastyMsg model SharedState.NoUpdate
+
+        Typography ->
+            Typography.init |> initWith TypographyPage TypographyMsg model SharedState.NoUpdate
 
         NotFound ->
             NotFound.init |> initWith NotFoundPage NotFoundMsg model SharedState.NoUpdate
