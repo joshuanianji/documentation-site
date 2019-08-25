@@ -14,6 +14,7 @@ import UiFramework.Container as Container
 import UiFramework.Navbar as Navbar
 import UiFramework.Types as Types
 import UiFramework.Typography as Typography
+import Util
 
 
 
@@ -198,7 +199,7 @@ update : SharedState -> Msg -> Model -> ( Model, Cmd Msg, SharedStateUpdate )
 update sharedState msg model =
     case msg of
         NavigateTo route ->
-            ( model, Navigation.pushUrl sharedState.navKey (Routes.toUrlString route), SharedState.NoUpdate )
+            ( model, Util.navigate sharedState.navKey route, SharedState.NoUpdate )
 
         NoOp ->
             ( model, Cmd.none, SharedState.NoUpdate )

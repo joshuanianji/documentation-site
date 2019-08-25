@@ -32,6 +32,15 @@
                 width: window.innerWidth
             }
         })
+
+        app.ports.changedUrl.subscribe(function () {
+            console.log("url changed!")
+            setTimeout(function () {
+                document.querySelectorAll('pre code').forEach((block) => {
+                    hljs.highlightBlock(block);
+                });
+            }, 50)
+        });
     </script>
 </body>
 

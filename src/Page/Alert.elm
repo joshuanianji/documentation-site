@@ -3,7 +3,7 @@ module Page.Alert exposing (Context, Model, Msg(..), init, update, view)
 {-| Alert component
 -}
 
-import Browser.Navigation as Navigation
+
 import Element exposing (Color, Element, fill, height, spacing, width)
 import Routes
 import SharedState exposing (SharedState, SharedStateUpdate(..))
@@ -196,8 +196,10 @@ text str =
     UiFramework.uiText (\\_ -> str)
 
 
--- when configuring, we'll build upon `Alert.default`, which creates an `Alert` type with default options
--- To convert the `Alert` type to a `UiElement msg` type, we need to use `Alert.view`.
+-- when configuring, we'll build upon `Alert.default`,
+-- which creates an `Alert` type with default options.
+-- To convert the `Alert` type to a 
+-- `UiElement msg` type, we need to use `Alert.view`.
 
 content : UiElement Msg 
 content = 
@@ -248,4 +250,4 @@ update sharedState msg model =
             ( model, Cmd.none, NoUpdate )
 
         NavigateTo route ->
-            ( model, Navigation.pushUrl sharedState.navKey (Routes.toUrlString route), NoUpdate )
+            ( model, Util.navigate sharedState.navKey route , NoUpdate )

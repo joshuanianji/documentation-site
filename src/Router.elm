@@ -32,6 +32,8 @@ import UiFramework.Configuration exposing (defaultThemeConfig)
 import UiFramework.Navbar
 import UiFramework.Types exposing (Role(..))
 import Url
+import Util
+import Ports
 
 
 
@@ -332,15 +334,14 @@ update sharedState msg model =
                     navigateTo route sharedState model
             in
             ( { newModel | route = route }
-            , newCmd
+            , Cmd.batch [newCmd, Ports.changedUrl ()]
             , newSharedStateUpdate
             )
 
         ( NavigateTo route, _ ) ->
             -- changes url
             ( model
-            , Nav.pushUrl model.navKey
-                (Routes.toUrlString route)
+            , Util.navigate sharedState.navKey route 
             , SharedState.NoUpdate
             )
 

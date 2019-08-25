@@ -1,6 +1,6 @@
 module Page.GettingStarted exposing (Model, Msg(..), init, update, view)
 
-import Element exposing (Color, Element, fill, height, width)
+import Element exposing (Color, Element, fill, height, width, spacing)
 import Element.Background as Background
 import Element.Font as Font
 import SharedState exposing (SharedState, SharedStateUpdate(..))
@@ -73,9 +73,9 @@ header =
     let
         jumbotronContent =
             UiFramework.uiColumn
-                [ Element.width Element.fill
-                , Element.height Element.fill
-                , Element.spacing 16
+                [ width fill
+                , height fill
+                , spacing 16
                 , Font.color (Element.rgb 1 1 1)
                 ]
                 [ Typography.display4 [] <|
@@ -100,7 +100,8 @@ content : UiElement Msg
 content =
     Container.simple [] <|
         UiFramework.uiColumn
-            [ width fill ]
+            [ width fill
+            , spacing 16 ]
             [ Typography.h1 [] (Util.text "Quick Start")
             , setupCode
             , Typography.h1 [] (Util.text "Module Code")

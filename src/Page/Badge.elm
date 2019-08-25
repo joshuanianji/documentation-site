@@ -121,4 +121,4 @@ update sharedState msg model =
             ( model, Cmd.none, NoUpdate )
 
         NavigateTo route ->
-            ( model, Navigation.pushUrl sharedState.navKey (Routes.toUrlString route), NoUpdate )
+            ( model, Util.navigate sharedState.navKey route , NoUpdate )

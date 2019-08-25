@@ -3,7 +3,7 @@ module Page.Button exposing (Context, Model, Msg(..), init, update, view)
 {-| Button component
 -}
 
-import Browser.Navigation as Navigation
+
 import Element exposing (Color, Element, fill, height, width)
 import Element.Background as Background
 import Element.Font as Font
@@ -224,4 +224,4 @@ update sharedState msg model =
             ( model, Cmd.none, NoUpdate )
 
         NavigateTo route ->
-            ( model, Navigation.pushUrl sharedState.navKey (Routes.toUrlString route), NoUpdate )
+            ( model, Util.navigate sharedState.navKey route , NoUpdate )
