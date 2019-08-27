@@ -3,12 +3,13 @@ module Page.Alert exposing (Context, Model, Msg(..), init, update, view)
 {-| Alert component
 -}
 
-
 import Element exposing (Color, Element, fill, height, spacing, width)
+import Element.Border as Border
 import Routes
 import SharedState exposing (SharedState, SharedStateUpdate(..))
 import UiFramework exposing (UiContextual, WithContext, toElement)
 import UiFramework.Alert as Alert
+import UiFramework.Badge as Badge
 import UiFramework.Container as Container
 import UiFramework.Types exposing (Role(..))
 import UiFramework.Typography as Typography
@@ -104,14 +105,17 @@ basicExample =
             [ Util.text "Alerts are available in 8 different roles and are available for any length of text" ]
         , UiFramework.uiColumn
             [ Element.spacing 8
-            , width fill
+            , Element.width Element.fill
             ]
-          <|
-            List.map
-                (\( role, name ) ->
-                    Alert.simple role (Util.text name)
-                )
-                rolesAndNames
+            [ Alert.simple Primary (Util.text "Primary role!")
+            , Alert.simple Secondary (Util.text "Secondary role!")
+            , Alert.simple Success (Util.text "Success role!")
+            , Alert.simple Info (Util.text "Info role!")
+            , Alert.simple Warning (Util.text "Warning role!")
+            , Alert.simple Danger (Util.text "Danger role!")
+            , Alert.simple Light (Util.text "Light role!")
+            , Alert.simple Dark (Util.text "Dark role!")
+            ]
         , basicExampleCode
         ]
 
@@ -140,9 +144,7 @@ UiFramework.uiColumn
     , Alert.simple Light (text "Light role!")
     , Alert.simple Dark (text "Dark role!")
     ]"""
-        |> Util.highlightCode "elm"
-        |> (\elem -> \_ -> elem)
-        |> UiFramework.fromElement
+        |> Util.uiHighlightCode "elm"
 
 
 configuration : UiElement Msg
@@ -158,6 +160,9 @@ configuration =
                 [ Util.text "Alerts come with a range of configurations." ]
             ]
         , sizeConfigs
+        , roleConfigs
+        , childConfigs
+        , attributeConfigs
         ]
 
 
@@ -196,10 +201,9 @@ text str =
     UiFramework.uiText (\\_ -> str)
 
 
--- when configuring, we'll build upon `Alert.default`,
+-- when configuring, we'll build upon `Alert.default`
 -- which creates an `Alert` type with default options.
--- To convert the `Alert` type to a 
--- `UiElement msg` type, we need to use `Alert.view`.
+-- To convert the `Alert` type to a `UiElement msg` type, we need to use `Alert.view`.
 
 content : UiElement Msg 
 content = 
@@ -216,9 +220,148 @@ content =
             |> Alert.withChild (text "Small alert!")
             |> Alert.view
         ]"""
-        |> Util.highlightCode "elm"
-        |> (\elem -> \_ -> elem)
-        |> UiFramework.fromElement
+        |> Util.uiHighlightCode "elm"
+
+
+roleConfigs : UiElement Msg
+roleConfigs =
+    UiFramework.uiColumn
+        [ spacing 16
+        , width fill
+        ]
+        [ Typography.h1 [] (Util.text "Roles")
+        , UiFramework.uiColumn
+            [ Element.spacing 8
+            , width fill
+            ]
+          <|
+            List.map
+                (\( role, name ) ->
+                    Alert.default
+                        |> Alert.withSmall
+                        |> Alert.withRole role
+                        |> Alert.withChild (Util.text (name ++ " alert, also a small one!"))
+                        |> Alert.view
+                )
+                rolesAndNames
+        , roleCode
+        ]
+
+
+roleCode =
+    """
+text : String -> WithContext context msg
+text str =
+    UiFramework.uiText (\\_ -> str)
+
+
+-- when configuring, we'll build upon `Alert.default`
+-- which creates an `Alert` type with default options.
+-- To convert the `Alert` type to a `UiElement msg` type, we need to use `Alert.view`.
+
+content : UiElement Msg 
+content = 
+    UiFramework.uiColumn 
+        [ Element.spacing 8
+        , Element.width Element.fill ] 
+        [ Alert.default
+            |> Alert.withSmall
+            |> Alert.withRole Primary
+            |> Alert.withChild (Util.text "Primary alert, also a small one")
+            |> Alert.view
+        , Alert.default
+            |> Alert.withSmall
+            |> Alert.withRole Secondary
+            |> Alert.withChild (Util.text "Secondary alert, also a small one"
+            |> Alert.view 
+        ...
+        ]"""
+        |> Util.uiHighlightCode "elm"
+
+
+childConfigs : UiElement Msg
+childConfigs =
+    UiFramework.uiColumn
+        [ spacing 16
+        , width fill
+        ]
+        [ Typography.h1 [] (Util.text "Child elements")
+        , UiFramework.uiParagraph []
+            [ Util.text "Alerts allow any UiElement node to be a child" ]
+        , Alert.simple Success <|
+            UiFramework.uiColumn
+                [ Element.spacing 8 ]
+                [ UiFramework.uiRow
+                    [ Element.spacing 8 ]
+                    [ Typography.textLead [] (Util.text "Yay!")
+                    , Badge.simple Success "Certified Bruh Moment"
+                    ]
+                , Util.text "Congratulations!"
+                ]
+        , childCode
+        ]
+
+
+childCode : UiElement Msg
+childCode =
+    """
+import UiFramework.Alert as Alert
+import UiFramework
+import Element
+import UiFramework.Types exposing (Role(..))
+import UiFramework.Badge as Badge
+
+text : String -> WithContext context msg
+text str =
+    UiFramework.uiText (\\_ -> str)
+
+
+Alert.simple Success <|
+    UiFramework.uiColumn
+        [ Element.spacing 8 ]
+        [ UiFramework.uiRow
+            [ Element.spacing 8 ]
+            [ Typography.textLead [] (text "Yay!")
+            , Badge.simple Success "Certified Bruh Moment"
+            ]
+        , text "Congratulations!"
+        ]"""
+        |> Util.uiHighlightCode "elm"
+
+
+attributeConfigs : UiElement Msg
+attributeConfigs =
+    UiFramework.uiColumn
+        [ spacing 16
+        , width fill
+        ]
+        [ Typography.h1 [] (Util.text "Adding extra attributes")
+        , UiFramework.uiParagraph []
+            [ Util.text "Using Elm-Ui's styling, we can modify our alerts how we choose." ]
+        , Alert.default
+            |> Alert.withChild (Util.text "This alert has a thicc border")
+            |> Alert.withExtraAttrs
+                [ Border.width 5 ]
+            |> Alert.view
+        , attributeCode
+        ]
+
+
+attributeCode : UiElement Msg
+attributeCode =
+    """
+import Element.Border as Border
+
+text : String -> WithContext context msg
+text str =
+    UiFramework.uiText (\\_ -> str)
+
+Alert.default
+    |> Alert.withChild (text "This alert has a thicc border")
+    |> Alert.withExtraAttrs
+        [ Border.width 5 ]
+    |> Alert.view"""
+        |> Util.uiHighlightCode "elm"
 
 
 rolesAndNames : List ( Role, String )
@@ -250,4 +393,4 @@ update sharedState msg model =
             ( model, Cmd.none, NoUpdate )
 
         NavigateTo route ->
-            ( model, Util.navigate sharedState.navKey route , NoUpdate )
+            ( model, Util.navigate sharedState.navKey route, NoUpdate )
