@@ -1,6 +1,6 @@
 module Page.GettingStarted exposing (Model, Msg(..), init, update, view)
 
-import Element exposing (Color, Element, fill, height, spacing, width)
+import Element exposing (Color, Element, fill, height, width, spacing)
 import Element.Background as Background
 import Element.Font as Font
 import SharedState exposing (SharedState, SharedStateUpdate(..))
@@ -101,13 +101,13 @@ content =
     Container.simple [] <|
         UiFramework.uiColumn
             [ width fill
-            , spacing 16
-            ]
+            , spacing 16 ]
             [ Typography.h1 [] (Util.text "Quick Start")
             , setupCode
             , Typography.h1 [] (Util.text "Module Code")
             , UiFramework.uiParagraph []
-                [ Util.text "Elm Ui Bootstrap requires a the full model-view-update architecture to work, because of the context architexture. Below is the not updated boilerplate code to start off a simple project."
+                [
+                    Util.text "Elm Ui Bootstrap requires a the full model-view-update architecture to work, because of the context architexture. Below is the not updated boilerplate code to start off a simple project."
                 ]
             , moduleCode
             ]
@@ -119,7 +119,9 @@ setupCode =
 mkdir elm-ui-bootstrap
 cd elm-ui-bootstrap
 elm install something/ui-bootstrap-quickstart"""
-        |> Util.uiHighlightCode "bash"
+        |> Util.highlightCode "bash"
+        |> (\elem -> \_ -> elem)
+        |> UiFramework.fromElement
 
 
 moduleCode : UiElement Msg
@@ -141,7 +143,9 @@ main =
             ]
 
         ]"""
-        |> Util.uiHighlightCode "elm"
+        |> Util.highlightCode "elm"
+        |> (\elem -> \_ -> elem)
+        |> UiFramework.fromElement
 
 
 

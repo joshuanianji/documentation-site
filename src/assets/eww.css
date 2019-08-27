@@ -14,5 +14,5 @@ pre > code.hljs{
 pre {
     overflow: auto;
     display: block;
-    max-width: 100%;
+    width: auto;
 }
