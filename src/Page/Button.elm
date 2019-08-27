@@ -3,7 +3,6 @@ module Page.Button exposing (Context, Model, Msg(..), init, update, view)
 {-| Button component
 -}
 
-
 import Element exposing (Color, Element, fill, height, width)
 import Element.Background as Background
 import Element.Font as Font
@@ -166,9 +165,7 @@ rolesAndNames =
     , ( Light, "Light" )
     , ( Dark, "Dark" )
     ]"""
-        |> Util.highlightCode "elm"
-        |> (\elem -> \_ -> elem)
-        |> UiFramework.fromElement
+        |> Util.uiHighlightCode "elm"
 
 
 moduleCode : UiElement Msg
@@ -190,9 +187,7 @@ main =
             ]
 
         ]"""
-        |> Util.highlightCode "elm"
-        |> (\elem -> \_ -> elem)
-        |> UiFramework.fromElement
+        |> Util.uiHighlightCode "elm"
 
 
 rolesAndNames : List ( Role, String )
@@ -224,4 +219,4 @@ update sharedState msg model =
             ( model, Cmd.none, NoUpdate )
 
         NavigateTo route ->
-            ( model, Util.navigate sharedState.navKey route , NoUpdate )
+            ( model, Util.navigate sharedState.navKey route, NoUpdate )

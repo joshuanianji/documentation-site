@@ -3,7 +3,6 @@ module Page.Typography exposing (Context, Model, Msg(..), init, update, view)
 {-| Alert component
 -}
 
-import Browser.Navigation as Navigation
 import Element exposing (Color, Element, fill, height, width)
 import Routes
 import SharedState exposing (SharedState, SharedStateUpdate(..))
@@ -107,4 +106,4 @@ update sharedState msg model =
             ( model, Cmd.none, NoUpdate )
 
         NavigateTo route ->
-            ( model, Util.navigate sharedState.navKey route , NoUpdate )
+            ( model, Util.navigate sharedState.navKey route, NoUpdate )

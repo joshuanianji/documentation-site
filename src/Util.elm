@@ -1,21 +1,36 @@
-module Util exposing (firacode, highlightCode, text, navigate)
+module Util exposing (firacode, highlightCode, navigate, text, uiHighlightCode)
 
 {-| code from <https://github.com/rundis/elm-bootstrap.info/blob/master/src/Util.elm>
 -}
 
+import Browser.Navigation as Navigation
 import Element exposing (Attribute, Element)
 import Element.Font as Font
 import Html
 import Html.Attributes as Attr
 import Markdown
-import UiFramework exposing (WithContext)
-import Browser.Navigation as Navigation
 import Routes
+import UiFramework exposing (WithContext)
 
 
 text : String -> WithContext context msg
 text str =
     UiFramework.uiText (\_ -> str)
+
+
+
+-- into a UiElement
+
+
+uiHighlightCode : String -> String -> WithContext context msg
+uiHighlightCode lang =
+    highlightCode lang
+        >> (\elem -> \_ -> elem)
+        >> UiFramework.fromElement
+
+
+
+-- into an Element
 
 
 highlightCode : String -> String -> Element msg
@@ -36,7 +51,12 @@ firacode =
         [ Font.typeface "Fira Code"
         , Font.serif
         ]
+
+
+
 -- navigate and push a flag to highlight code
-navigate : Navigation.Key -> Routes.Route -> Cmd msg 
+
+
+navigate : Navigation.Key -> Routes.Route -> Cmd msg
 navigate navKey route =
     Navigation.pushUrl navKey (Routes.toUrlString route) |> Debug.log "navigation!"

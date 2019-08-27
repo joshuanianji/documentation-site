@@ -3,7 +3,7 @@ module Page.Table exposing (Context, Model, Msg(..), init, update, view)
 {-| Alert component
 -}
 
-import Browser.Navigation as Navigation
+
 import Element exposing (Color, Element, fill, height, width)
 import Routes
 import SharedState exposing (SharedState, SharedStateUpdate(..))
