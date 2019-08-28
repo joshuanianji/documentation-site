@@ -22,18 +22,15 @@ import Page.Pagination as Pagination
 import Page.Table as Table
 import Page.Toasty as Toasty
 import Page.Typography as Typography
+import Ports
 import Routes exposing (Route(..))
 import SharedState exposing (SharedState, SharedStateUpdate, Theme(..))
 import Task
-import Themes.Darkly exposing (darklyThemeConfig)
-import Themes.Materia exposing (materiaThemeConfig)
 import UiFramework exposing (WithContext, toElement)
-import UiFramework.Configuration exposing (defaultThemeConfig)
 import UiFramework.Navbar
 import UiFramework.Types exposing (Role(..))
 import Url
 import Util
-import Ports
 
 
 
@@ -334,14 +331,14 @@ update sharedState msg model =
                     navigateTo route sharedState model
             in
             ( { newModel | route = route }
-            , Cmd.batch [newCmd, Ports.changedUrl ()]
+            , Cmd.batch [ newCmd, Ports.changedUrl () ]
             , newSharedStateUpdate
             )
 
         ( NavigateTo route, _ ) ->
             -- changes url
             ( model
-            , Util.navigate sharedState.navKey route 
+            , Util.navigate sharedState.navKey route
             , SharedState.NoUpdate
             )
 
