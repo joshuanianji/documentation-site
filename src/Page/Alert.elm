@@ -14,7 +14,7 @@ import UiFramework.Container as Container
 import UiFramework.Types exposing (Role(..))
 import UiFramework.Typography as Typography
 import Util
-import View.Component exposing (componentNavbar, viewHeader)
+import View.Component as Component exposing (componentNavbar, viewHeader)
 
 
 
@@ -100,9 +100,8 @@ basicExample =
         [ spacing 16
         , width fill
         ]
-        [ Typography.h1 [] (Util.text "Basic Example")
-        , UiFramework.uiParagraph []
-            [ Util.text "Alerts are available in 8 different roles and are available for any length of text" ]
+        [ Component.title "Basic Example"
+        , Component.wrappedText "Alerts are available in 8 different roles and are available for any length of text"
         , UiFramework.uiColumn
             [ Element.spacing 8
             , Element.width Element.fill
@@ -126,6 +125,7 @@ basicExampleCode =
 import Element
 import UiFramework
 import UiFramework.Alert as Alert
+import UiFramework.Types exposing (Role(..))
 
 text : String -> WithContext context msg
 text str =
@@ -155,15 +155,35 @@ configuration =
         ]
         [ UiFramework.uiColumn
             [ spacing 16 ]
-            [ Typography.h1 [] (Util.text "Configurations")
-            , UiFramework.uiParagraph []
-                [ Util.text "Alerts come with a range of configurations." ]
+            [ Component.title "Configurations"
+            , Component.wrappedText "When configuring, we use pipelines to build up our badge, starting from the default function."
             ]
+        , configExampleCode
         , sizeConfigs
         , roleConfigs
         , childConfigs
         , attributeConfigs
         ]
+
+
+configExampleCode : UiElement Msg
+configExampleCode =
+    """
+-- an example showing all the configurations available at the moment
+
+text : String -> WithContext context msg
+text str =
+    UiFramework.uiText (\\_ -> str)
+
+
+customBadge =
+    Alert.default
+        |> Alert.withSmall -- or withLarge
+        |> Alert.withRole Secondary
+        |> Alert.withExtraAttrs []
+        |> Alert.withChild (text "Hello!")
+        |> Alert.view"""
+        |> Util.uiHighlightCode "elm"
 
 
 sizeConfigs : UiElement Msg
@@ -172,9 +192,8 @@ sizeConfigs =
         [ spacing 16
         , width fill
         ]
-        [ Typography.h1 [] (Util.text "Sizing")
-        , UiFramework.uiParagraph []
-            [ Util.text "There are three sizes available to alerts." ]
+        [ Component.section "Sizing"
+        , Component.wrappedText "There are three sizes available to alerts."
         , UiFramework.uiColumn
             [ Element.spacing 8
             , width fill
@@ -229,7 +248,7 @@ roleConfigs =
         [ spacing 16
         , width fill
         ]
-        [ Typography.h1 [] (Util.text "Roles")
+        [ Component.section "Roles"
         , UiFramework.uiColumn
             [ Element.spacing 8
             , width fill
@@ -248,16 +267,13 @@ roleConfigs =
         ]
 
 
+roleCode : UiElement Msg
 roleCode =
     """
 text : String -> WithContext context msg
 text str =
     UiFramework.uiText (\\_ -> str)
 
-
--- when configuring, we'll build upon `Alert.default`
--- which creates an `Alert` type with default options.
--- To convert the `Alert` type to a `UiElement msg` type, we need to use `Alert.view`.
 
 content : UiElement Msg 
 content = 
@@ -285,9 +301,8 @@ childConfigs =
         [ spacing 16
         , width fill
         ]
-        [ Typography.h1 [] (Util.text "Child elements")
-        , UiFramework.uiParagraph []
-            [ Util.text "Alerts allow any UiElement node to be a child" ]
+        [ Component.section "Child elements"
+        , Component.wrappedText "Alerts allow any UiElement node to be a child"
         , Alert.simple Success <|
             UiFramework.uiColumn
                 [ Element.spacing 8 ]
@@ -335,9 +350,8 @@ attributeConfigs =
         [ spacing 16
         , width fill
         ]
-        [ Typography.h1 [] (Util.text "Adding extra attributes")
-        , UiFramework.uiParagraph []
-            [ Util.text "Using Elm-Ui's styling, we can modify our alerts how we choose." ]
+        [ Component.section "Adding extra attributes"
+        , Component.wrappedText "Using Elm-Ui's styling, we can modify our alerts how we choose."
         , Alert.default
             |> Alert.withChild (Util.text "This alert has a thicc border")
             |> Alert.withExtraAttrs
@@ -352,9 +366,11 @@ attributeCode =
     """
 import Element.Border as Border
 
+
 text : String -> WithContext context msg
 text str =
     UiFramework.uiText (\\_ -> str)
+
 
 Alert.default
     |> Alert.withChild (text "This alert has a thicc border")

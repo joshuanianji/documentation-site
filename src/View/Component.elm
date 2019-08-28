@@ -1,8 +1,8 @@
-module View.Component exposing (Header, componentNavbar, viewHeader)
+module View.Component exposing (Header, componentNavbar, section, title, viewHeader, wrappedText)
 
 -- I need to rename this!
 
-import Element exposing (Color, Element, fill, height, width)
+import Element exposing (Color, fill, height, width)
 import Element.Background as Background
 import Element.Events as Events
 import Element.Font as Font
@@ -11,7 +11,7 @@ import UiFramework exposing (WithContext)
 import UiFramework.ColorUtils as ColorUtils
 import UiFramework.Container as Container
 import UiFramework.Typography as Typography
-import Util exposing (text)
+import Util
 
 
 type alias Header =
@@ -30,10 +30,10 @@ viewHeader pageContent =
                 , Element.spacing 16
                 , Font.color (Element.rgb 1 1 1)
                 ]
-                [ Typography.display4 [] <|
-                    UiFramework.uiParagraph [] [ text pageContent.title ]
+                [ Typography.display3 [] <|
+                    UiFramework.uiParagraph [] [ Util.text pageContent.title ]
                 , UiFramework.uiParagraph []
-                    [ Typography.textLead [] <| text pageContent.description ]
+                    [ Typography.textLead [] <| Util.text pageContent.description ]
                 ]
     in
     UiFramework.flatMap
@@ -49,12 +49,12 @@ viewHeader pageContent =
 componentNavbar : (Route -> msg) -> Route -> WithContext c msg
 componentNavbar navigateToMsg route =
     UiFramework.uiColumn
-        [ Element.spacing 16 ]
+        [ Element.spacing 20 ]
     <|
         List.map
             (\( r, name ) ->
                 if r == route then
-                    Typography.textSmall [ Element.pointer ] (text name)
+                    Typography.textSmall [ Element.pointer ] (Util.text name)
 
                 else
                     Typography.textSmall
@@ -63,9 +63,37 @@ componentNavbar navigateToMsg route =
                         , Element.pointer
                         , Events.onClick (navigateToMsg r)
                         ]
-                        (text name)
+                        (Util.text name)
             )
             routeNameList
+
+
+
+-- for things like "Basic example" and "Configurations"
+
+
+title : String -> WithContext c msg
+title str =
+    Typography.display4 [ Font.size 48 ] (Util.text str)
+
+
+
+-- for the separate parts in the configurations. This is just with Typography.h1
+
+
+section : String -> WithContext c msg
+section str =
+    Typography.h1 [] (Util.text str)
+
+
+
+-- basically a Util.text wrapped in a uiParagraph
+
+
+wrappedText : String -> WithContext c msg
+wrappedText str =
+    UiFramework.uiParagraph []
+        [ Util.text str ]
 
 
 routeNameList : List ( Route, String )

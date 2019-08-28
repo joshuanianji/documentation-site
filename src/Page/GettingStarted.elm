@@ -78,7 +78,7 @@ header =
                 , spacing 16
                 , Font.color (Element.rgb 1 1 1)
                 ]
-                [ Typography.display4 [] <|
+                [ Typography.display3 [] <|
                     UiFramework.uiParagraph [] [ Util.text "Getting Started" ]
                 , UiFramework.uiParagraph []
                     [ Typography.textLead [] <|
