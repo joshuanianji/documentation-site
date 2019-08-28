@@ -3,18 +3,16 @@ module Page.Button exposing (Context, Model, Msg(..), init, update, view)
 {-| Button component
 -}
 
-import Element exposing (Color, Element, fill, height, width)
-import Element.Background as Background
-import Element.Font as Font
+import Element exposing (Color, Element, fill, height, spacing, width)
+import FontAwesome.Brands
 import Routes
 import SharedState exposing (SharedState, SharedStateUpdate(..))
-import UiFramework exposing (UiContextual, WithContext, fromElement, toElement)
+import UiFramework exposing (UiContextual, WithContext, toElement)
 import UiFramework.Button as Button
 import UiFramework.Container as Container
 import UiFramework.Types exposing (Role(..))
-import UiFramework.Typography as Typography
 import Util
-import View.Component exposing (componentNavbar, viewHeader)
+import View.Component as Component exposing (componentNavbar, viewHeader)
 
 
 
@@ -87,6 +85,17 @@ content : SharedState -> UiElement Msg
 content sharedState =
     UiFramework.uiColumn
         [ width fill
+        , spacing 64
+        ]
+        [ basicExample
+        , configuration
+        ]
+
+
+
+{--
+    UiFramework.uiColumn
+        [ width fill
         , Element.spacing 64
         ]
         [ basicButtons
@@ -95,36 +104,103 @@ content sharedState =
         , Typography.h1 [] (Util.text "Module Code")
         , moduleCode
         ]
+--}
 
 
-basicButtons : UiElement Msg
-basicButtons =
+basicExample : UiElement Msg
+basicExample =
     UiFramework.uiColumn
         [ width fill
         , Element.spacing 32
         ]
-        [ Typography.h1 [] (Util.text "Basic Buttons")
-        , UiFramework.uiParagraph []
-            [ Util.text "Default options for the buttons are as follows:" ]
+        [ Component.title "Basic Example"
+        , Component.wrappedText "Default buttons take in a message to trigger when clicked, and a string for the label. Icons are optional, and can be added through configuration."
         , UiFramework.uiWrappedRow
             [ Element.spacing 4 ]
-            [ Button.simple NoOp "Default" ]
+            [ Button.simple NoOp "Do Something" ]
+        , basicExampleCode
         ]
 
 
+basicExampleCode : UiElement Msg
+basicExampleCode =
+    """
+import Element
+import UiFramework
+import UiFramework.Button as Button
 
--- showing the 6 predefined roles and such
+type Msg 
+    = DoSomething
+
+importantButton =
+    Button.simple DoSomething "Do something\""""
+        |> Util.uiHighlightCode "elm"
 
 
-buttonRoles : UiElement Msg
-buttonRoles =
+configuration : UiElement Msg
+configuration =
+    UiFramework.uiColumn
+        [ spacing 48
+        , width fill
+        ]
+        [ UiFramework.uiColumn
+            [ spacing 16 ]
+            [ Component.title "Configurations"
+            , Component.wrappedText "When configuring, we use pipelines to build up our button, starting from the default function."
+            ]
+        , configExampleCode
+        , roleConfig
+        , basicFunctionalityConfig
+        , outlineConfig
+        , sizeConfig
+        , blockConfig
+        , disableConfig
+        , iconConfig
+        ]
+
+
+configExampleCode : UiElement Msg
+configExampleCode =
+    """
+import FontAwesome.Solid
+import UiFramework.Types exposing (Role(..))
+
+
+-- using Lattyware's FontAwesome module 
+-- (https://package.elm-lang.org/packages/lattyware/elm-fontawesome/3.1.0/)
+
+
+
+type Msg 
+    = DoSomething
+
+
+-- an example showing all the configurations available at the moment
+
+
+
+customButton =
+    Button.default
+        |> Button.withRole Info
+        |> Button.withOutlined
+        |> Button.withBlock
+        |> Button.withDisabled
+        |> Button.withLarge -- or withSmall
+        |> Button.withMessage (Just DoSomething)
+        |> Button.withIcon FontAwesome.Solid.angleDoubleRight
+        |> Button.withLabel "Button with Icon"
+        |> Button.view"""
+        |> Util.uiHighlightCode "elm"
+
+
+roleConfig : UiElement Msg
+roleConfig =
     UiFramework.uiColumn
         [ width fill
         , Element.spacing 32
         ]
-        [ Typography.h1 [] (Util.text "Basic Buttons")
-        , UiFramework.uiParagraph []
-            [ Util.text "Bootstrap offers 6 roles for a button, as well as a \"light\" and \"dark\" role." ]
+        [ Component.section "Roles"
+        , Component.wrappedText "There are 6 roles for a button, as well as a Light and Dark role. By default it is the Primary role"
         , UiFramework.uiWrappedRow
             [ Element.spacing 4 ]
             (List.map
@@ -136,56 +212,275 @@ buttonRoles =
                 )
                 rolesAndNames
             )
+        , roleConfigCode
         ]
 
 
-buttonRolesCode : UiElement Msg
-buttonRolesCode =
+roleConfigCode : UiElement Msg
+roleConfigCode =
     """
-UiFramework.uiRow 
-    [ Element.spacing 4 ] 
-    (List.map
-        (\\( role, name ) ->
-            Button.default
-                |> Button.withLabel name
-                |> Button.withRole role
-                |> Button.view
-        )
-        rolesAndNames
-    )
+{-| All the roles are:
+  - Primary
+  - Secondary
+  - Success
+  - Info
+  - Warning
+  - Danger
+  - Light
+  - Dark
+-}
 
-rolesAndNames : List ( Role, String )
-rolesAndNames =
-    [ ( Primary, "Primary" )
-    , ( Secondary, "Secondary" )
-    , ( Success, "Success" )
-    , ( Info, "Info" )
-    , ( Warning, "Warning" )
-    , ( Danger, "Danger" )
-    , ( Light, "Light" )
-    , ( Dark, "Dark" )
-    ]"""
+buttons =
+    UiFramework.uiRow 
+        [ Element.spacing 4 ] 
+        [ -- no need for a Button.withRole for the Primary one
+        Button.default
+            |> Button.withLabel "Primary"
+            |> Button.view
+        , Button.default
+            |> Button.withLabel "Secondary"
+            |> Button.withRole Secondary
+            |> Button.view
+        ...
+        ]"""
         |> Util.uiHighlightCode "elm"
 
 
-moduleCode : UiElement Msg
-moduleCode =
+basicFunctionalityConfig : UiElement Msg
+basicFunctionalityConfig =
+    UiFramework.uiColumn
+        [ width fill
+        , Element.spacing 32
+        ]
+        [ Component.section "withMessage and withLabel"
+        , Component.wrappedText "These provide the same functionality as Button.simple. By default, every button has a label of an empty string and Nothing for a message."
+        , Button.simple NoOp "Button"
+        , basicFunctionalityConfigCode
+        ]
+
+
+basicFunctionalityConfigCode : UiElement Msg
+basicFunctionalityConfigCode =
     """
-module Main exposing (main)
-
-import Html exposing (..)
-import Bootstrap.CDN as CDN
-import Bootstrap.Grid as Grid
+type Msg 
+    = DoSomething 
 
 
-main =
-    Grid.container []
-        [ CDN.stylesheet -- creates an inline style node with the Bootstrap CSS
-        , Grid.row []
-            [ Grid.col []
-                [ text "Some content for my view here..."]
+basicButton =
+    Button.simple DoSomething "Button"
+
+
+-- is the same as 
+
+basicButton =
+    Button.default 
+        |> Button.withMessage (Just DoSomething)
+        |> Button.withLabel "Button\""""
+        |> Util.uiHighlightCode "elm"
+
+
+outlineConfig : UiElement Msg
+outlineConfig =
+    UiFramework.uiColumn
+        [ width fill
+        , Element.spacing 32
+        ]
+        [ Component.section "Outline"
+        , Component.wrappedText "Bootstrap gives you the option to make a button \"outlined\", where the background colors are removed."
+        , UiFramework.uiWrappedRow
+            [ Element.spacing 4 ]
+            (List.map
+                (\( role, name ) ->
+                    Button.default
+                        |> Button.withLabel name
+                        |> Button.withRole role
+                        |> Button.withOutlined
+                        |> Button.view
+                )
+                rolesAndNames
+            )
+        , outlineConfigCode
+        ]
+
+
+outlineConfigCode : UiElement Msg
+outlineConfigCode =
+    """
+outlinedButtons =
+    UiFramework.uiRow 
+        [ Element.spacing 4 ] 
+        [ Button.default
+            |> Button.withLabel "Primary"
+            |> Button.withOutlined
+            |> Button.view
+        , Button.default
+            |> Button.withLabel "Secondary"
+            |> Button.withRole Secondary
+            |> Button.withOutlined
+            |> Button.view
+        ...
+        ]"""
+        |> Util.uiHighlightCode "elm"
+
+
+sizeConfig : UiElement Msg
+sizeConfig =
+    UiFramework.uiColumn
+        [ width fill
+        , Element.spacing 32
+        ]
+        [ Component.section "Sizes"
+        , Component.wrappedText "Large and small buttons differ in font and padding size."
+        , UiFramework.uiWrappedRow
+            [ Element.spacing 4 ]
+            [ Button.default
+                |> Button.withLabel "Large Button"
+                |> Button.withLarge
+                |> Button.view
+            , Button.default
+                |> Button.withLabel "Regular Button"
+                |> Button.view
+            , Button.default
+                |> Button.withLabel "Small Button"
+                |> Button.withSmall
+                |> Button.view
             ]
+        , sizeConfigCode
+        ]
 
+
+sizeConfigCode : UiElement Msg
+sizeConfigCode =
+    """
+buttonSizes =
+    UiFramework.uiWrappedRow
+        [ Element.spacing 4 ]
+        [ Button.default
+            |> Button.withLabel "Large Button"
+            |> Button.withLarge
+            |> Button.view
+        , Button.default
+            |> Button.withLabel "Regular Button"
+            |> Button.view
+        , Button.default
+            |> Button.withLabel "Small Button"
+            |> Button.withSmall
+            |> Button.view
+        ]"""
+        |> Util.uiHighlightCode "elm"
+
+
+blockConfig : UiElement Msg
+blockConfig =
+    UiFramework.uiColumn
+        [ width fill
+        , Element.spacing 32
+        ]
+        [ Component.section "Block buttons"
+        , Component.wrappedText "Take up the entirety of the parent container width via the withBlock function. This option is not functional yet."
+        , Button.default
+            |> Button.withLabel "Block Button"
+            |> Button.withBlock
+            |> Button.view
+        , blockConfigCode
+        ]
+
+
+blockConfigCode : UiElement Msg
+blockConfigCode =
+    """
+blockButton =
+    Button.default
+        |> Button.withLabel "Block Button"
+        |> Button.withBlock
+        |> Button.view"""
+        |> Util.uiHighlightCode "elm"
+
+
+disableConfig : UiElement Msg
+disableConfig =
+    UiFramework.uiColumn
+        [ width fill
+        , Element.spacing 32
+        ]
+        [ Component.section "Disabled buttons"
+        , Component.wrappedText "Make a button look inactive by the withDisabled function."
+        , UiFramework.uiWrappedRow
+            [ Element.spacing 4 ]
+            (List.map
+                (\( role, name ) ->
+                    Button.default
+                        |> Button.withLabel name
+                        |> Button.withRole role
+                        |> Button.withDisabled
+                        |> Button.view
+                )
+                rolesAndNames
+            )
+        , disableConfigCode
+        ]
+
+
+disableConfigCode : UiElement Msg
+disableConfigCode =
+    """
+buttonSizes =
+    UiFramework.uiWrappedRow
+        [ Element.spacing 4 ]
+        [ Button.default
+            |> Button.withLabel "Primary"
+            |> Button.withDisabled
+            |> Button.view
+        , Button.default
+            |> Button.withLabel "Secondary"
+            |> Button.withRole Secondary
+            |> Button.withDisabled
+            |> Button.view
+        ...
+        ]"""
+        |> Util.uiHighlightCode "elm"
+
+
+iconConfig : UiElement Msg
+iconConfig =
+    UiFramework.uiColumn
+        [ width fill
+        , Element.spacing 32
+        ]
+        [ Component.section "Buttons with Icons"
+        , Component.wrappedText "Though used primarily with navbars, buttons with icons can serve other uses as well."
+        , UiFramework.uiParagraph []
+            [ Util.text "Note that you'll have to "
+            , Util.text "include the required CSS in your website "
+            , Util.text "(check out the Elm FontAwesome page for more details - "
+            , Util.text "https://github.com/lattyware/elm-fontawesome/tree/3.1.0#required-css)"
+            ]
+        , Component.wrappedText "As of now, you cannot add a custom UiElement to a button. This means you cannot add an animated icon, for example."
+        , UiFramework.uiWrappedRow
+            [ Element.spacing 4 ]
+            [ Button.default
+                |> Button.withLabel "Github"
+                |> Button.withIcon FontAwesome.Brands.github
+                |> Button.view
+            ]
+        , iconConfigCode
+        ]
+
+
+iconConfigCode : UiElement Msg
+iconConfigCode =
+    """
+import FontAwesome.Brands
+
+buttonSizes =
+    UiFramework.uiWrappedRow
+        [ Element.spacing 4 ]
+        [ Button.default
+            |> Button.withLabel "Github"
+            |> Button.withIcon FontAwesome.Brands.github
+            |> Button.view
+        ]
+        ...
         ]"""
         |> Util.uiHighlightCode "elm"
 

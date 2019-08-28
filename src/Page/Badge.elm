@@ -3,16 +3,16 @@ module Page.Badge exposing (Context, Model, Msg(..), init, update, view)
 {-| Alert component
 -}
 
-import Element exposing (Color, Element, fill, height, width)
+import Element exposing (Color, Element, fill, height, spacing, width)
+import Element.Border as Border
 import Routes
 import SharedState exposing (SharedState, SharedStateUpdate(..))
 import UiFramework exposing (UiContextual, WithContext, toElement)
 import UiFramework.Badge as Badge
 import UiFramework.Container as Container
 import UiFramework.Types exposing (Role(..))
-import UiFramework.Typography as Typography
 import Util
-import View.Component exposing (componentNavbar, viewHeader)
+import View.Component as Component exposing (componentNavbar, viewHeader)
 
 
 
@@ -63,7 +63,7 @@ view sharedState model =
         [ width fill, height fill ]
         [ viewHeader
             { title = "Badge"
-            , description = "Smol Info"
+            , description = "Nerfed alerts"
             }
         , Container.simple
             [ Element.paddingXY 0 64 ]
@@ -87,8 +87,186 @@ content =
         [ width fill
         , Element.spacing 64
         ]
-        [ Typography.h1 [] (Util.text "Module Code")
+        [ basicExample
+        , configuration
         ]
+
+
+basicExample : UiElement Msg
+basicExample =
+    UiFramework.uiColumn
+        [ spacing 16
+        , width fill
+        ]
+        [ Component.title "Basic Example"
+        , Component.wrappedText "A basic badge consists of a role and a string"
+        , UiFramework.uiWrappedRow
+            [ Element.spacing 8
+            , Element.width Element.fill
+            ]
+          <|
+            List.map
+                (\( role, name ) ->
+                    Badge.simple role name
+                )
+                rolesAndNames
+        , basicExampleCode
+        ]
+
+
+basicExampleCode : UiElement Msg
+basicExampleCode =
+    """
+import UiFramework
+import UiFramework.Badge as Badge
+import UiFramework.Types exposing (Role(..))
+
+
+UiFramework.uiColumn
+    [ Element.spacing 8
+    , Element.width Element.fill
+    ]
+    [ Badge.simple Primary "Primary badge!"
+    , Badge.simple Secondary "Secondary badge!"
+    , Badge.simple Success "Success badge!"
+    , Badge.simple Info "Info badge!"
+    , Badge.simple Warning "Warning badge!"
+    , Badge.simple Danger "Danger badge!"
+    , Badge.simple Light "Light badge!"
+    , Badge.simple Dark "Dark badge!"
+    ]"""
+        |> Util.uiHighlightCode "elm"
+
+
+configuration : UiElement Msg
+configuration =
+    UiFramework.uiColumn
+        [ spacing 48
+        , width fill
+        ]
+        [ UiFramework.uiColumn
+            [ spacing 16 ]
+            [ Component.title "Configurations"
+            , Component.wrappedText "When configuring, we use pipelines to build up our badge, starting from the default function."
+            ]
+        , configExampleCode
+        , attributeConfigs
+        , rolesAndLabelConfig
+        , pillConfig
+        ]
+
+
+configExampleCode : UiElement Msg
+configExampleCode =
+    """
+-- an example showing all the configurations availablt at the moment
+
+
+customBadge =
+    Badge.default
+        |> Badge.withRole Primary
+        |> Badge.label "Custom Badge"
+        |> Badge.withPill
+        |> Badge.withExtraAttrs []
+        |> Badge.view"""
+        |> Util.uiHighlightCode "elm"
+
+
+attributeConfigs : UiElement Msg
+attributeConfigs =
+    UiFramework.uiColumn
+        [ spacing 16
+        , width fill
+        ]
+        [ Component.section "Adding extra attributes"
+        , Component.wrappedText "Using Elm-Ui, we can modify our badges."
+        , Badge.default
+            |> Badge.withLabel "border"
+            |> Badge.withExtraAttrs
+                [ Border.width 5
+                , Border.color <| Element.rgb 0 0 0
+                ]
+            |> Badge.view
+        , attributeConfigCode
+        ]
+
+
+attributeConfigCode : UiElement Msg
+attributeConfigCode =
+    """
+import Element.Border as Border
+
+text : String -> WithContext context msg
+text str =
+    UiFramework.uiText (\\_ -> str)
+
+bigBorderBadge =
+    Badge.default
+        |> Badge.withLabel "border"
+        |> Badge.withExtraAttrs
+            [ Border.width 5
+            , Border.color <| Element.rgb 0 0 0
+            ]
+        |> Badge.view"""
+        |> Util.uiHighlightCode "elm"
+
+
+rolesAndLabelConfig : UiElement Msg
+rolesAndLabelConfig =
+    UiFramework.uiColumn
+        [ spacing 16
+        , width fill
+        ]
+        [ Component.section "Roles and Labels"
+        , Component.wrappedText "These pipeline functions bring the basic functionality to badge customization. By default, the role of a badge is the Primary role, and the label is an empty string."
+        , Badge.simple Secondary "Secondary badge!"
+        , rolesAndLabelsConfigCode
+        ]
+
+
+rolesAndLabelsConfigCode : UiElement Msg
+rolesAndLabelsConfigCode =
+    """
+simpleButton =
+    Badge.simple Secondary "Secondary badge!"
+
+
+-- is equivalent to --
+
+
+simpleButton =
+    Badge.default 
+        |> Badge.withRole Secondary 
+        |> Badge.withLabel "Secondary Badge!"
+        |> Badge.view"""
+        |> Util.uiHighlightCode "elm"
+
+
+pillConfig : UiElement Msg
+pillConfig =
+    UiFramework.uiColumn
+        [ spacing 16
+        , width fill
+        ]
+        [ Component.section "Pills or no pill"
+        , Component.wrappedText "A badge can have a \"pill\" config set to true, where the corners are more rounded. By default this is set to false."
+        , Badge.default
+            |> Badge.withLabel "Pill Badge"
+            |> Badge.withPill
+            |> Badge.view
+        , pillConfigCode
+        ]
+
+
+pillConfigCode : UiElement Msg
+pillConfigCode =
+    """
+pillBadge =
+    Badge.default
+        |> Badge.withLabel "Pill Badge"
+        |> Badge.withPill
+        |> Badge.view"""
+        |> Util.uiHighlightCode "elm"
 
 
 rolesAndNames : List ( Role, String )
