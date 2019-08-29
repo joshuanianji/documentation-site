@@ -1,6 +1,6 @@
 module Page.NotFound exposing (Model, Msg(..), init, update, view)
 
-import Browser.Navigation as Navigation
+
 import Element exposing (Element)
 import Element.Font as Font
 import FontAwesome.Solid

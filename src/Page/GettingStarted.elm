@@ -107,7 +107,7 @@ content =
             , setupCode
             , Typography.h1 [] (Util.text "Module Code")
             , UiFramework.uiParagraph []
-                [ Util.text "Elm Ui Bootstrap requires a the full model-view-update architecture to work, because of the context architexture. Below is the not updated boilerplate code to start off a simple project."
+                [ Util.text "Elm Ui Bootstrap requires a the full model-view-update architecture to work, because of the context architecture. Below is the not updated boilerplate code to start off a simple project."
                 ]
             , moduleCode
             ]
