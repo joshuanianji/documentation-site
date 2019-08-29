@@ -140,26 +140,24 @@ description =
                 ]
                 [ UiFramework.uiColumn
                     [ Element.width Element.fill
-                    , Element.spacing 8
+                    , Element.spacing 16
+                , Element.alignTop
                     ]
                     [ Typography.h4
                         []
                         (text "Getting Started")
-                    , UiFramework.uiParagraph
-                        []
-                        [ text ipsumText ]
+                    , Component.wrappedText "Get to know the basics of the Context architecture, and how to use it to greatly simplify your code. Download the starter application (which is not yet finished) and start fiddling around with the code with elm-live."
                     , getStartedButton
                     ]
                 , UiFramework.uiColumn
                     [ Element.width Element.fill
-                    , Element.spacing 8
+                    , Element.spacing 16
+                , Element.alignTop
                     ]
                     [ Typography.h4
                         []
                         (text "Documentation")
-                    , UiFramework.uiParagraph
-                        []
-                        [ text ipsumText ]
+                    , Component.wrappedText "Learn the components of the UiFramework, and understand the modularity and type safe API through clear explanations and code examples. "
                     , learnMoreButton
                     ]
                 ]
