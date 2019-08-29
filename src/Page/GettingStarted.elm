@@ -91,7 +91,7 @@ header =
             Container.jumbotron
                 |> Container.withFullWidth
                 |> Container.withChild (Container.simple [] jumbotronContent)
-                |> Container.withExtraAttributes [ Background.color context.purpleColor ]
+                |> Container.withExtraAttrs [ Background.color context.purpleColor ]
                 |> Container.view
         )
 

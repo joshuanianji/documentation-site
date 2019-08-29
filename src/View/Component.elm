@@ -41,7 +41,7 @@ viewHeader pageContent =
             Container.jumbotron
                 |> Container.withFullWidth
                 |> Container.withChild (Container.simple [] jumbotronContent)
-                |> Container.withExtraAttributes [ Background.color context.purpleColor ]
+                |> Container.withExtraAttrs [ Background.color context.purpleColor ]
                 |> Container.view
         )
 
@@ -49,12 +49,12 @@ viewHeader pageContent =
 componentNavbar : (Route -> msg) -> Route -> WithContext c msg
 componentNavbar navigateToMsg route =
     UiFramework.uiColumn
-        [ Element.spacing 20 ]
+        [ ]
     <|
         List.map
             (\( r, name ) ->
                 if r == route then
-                    Typography.textSmall [ Element.pointer ] (Util.text name)
+                    Typography.textSmall [ Element.pointer , Element.padding 8] (Util.text name)
 
                 else
                     Typography.textSmall
@@ -62,6 +62,7 @@ componentNavbar navigateToMsg route =
                         , Element.mouseOver [ Font.color (ColorUtils.hexToColor "#8e869d") ]
                         , Element.pointer
                         , Events.onClick (navigateToMsg r)
+                        , Element.padding 8
                         ]
                         (Util.text name)
             )

@@ -3,8 +3,8 @@ module Page.Icon exposing (Context, Model, Msg(..), init, update, view)
 {-| Alert component
 -}
 
-import Browser.Navigation as Navigation
-import Element exposing (Color, Element, fill, height, width)
+
+import Element exposing (Color, Element, fill, height, width, spacing)
 import Routes
 import SharedState exposing (SharedState, SharedStateUpdate(..))
 import UiFramework exposing (UiContextual, WithContext, toElement)
@@ -13,8 +13,11 @@ import UiFramework.Icon as Icon
 import UiFramework.Types exposing (Role(..))
 import UiFramework.Typography as Typography
 import Util
-import View.Component exposing (componentNavbar, viewHeader)
-
+import View.Component as Component exposing (componentNavbar, viewHeader)
+import FontAwesome.Solid
+import FontAwesome.Brands
+import UiFramework.Navbar as Navbar
+import UiFramework.Button as Button
 
 
 -- UIFRAMEWORK TYPE
@@ -64,7 +67,7 @@ view sharedState model =
         [ width fill, height fill ]
         [ viewHeader
             { title = "Icon"
-            , description = "Use Font Awesome!"
+            , description = "FontAwesome 5 Icons with Bootstrap"
             }
         , Container.simple
             [ Element.paddingXY 0 64 ]
@@ -88,10 +91,156 @@ content =
         [ width fill
         , Element.spacing 64
         ]
-        [ Typography.h1 [] (Util.text "Module Code")
+        [ basicExample
+        , gettingStarted
+        , realLifeUses
+        ]
+
+basicExample : UiElement Msg
+basicExample =
+    UiFramework.uiColumn
+        [ width fill
+        , Element.spacing 32
+        ]
+        [ Component.title "Basic Example"
+        , Component.wrappedText "Basic icons are rendered with Lattyware's Elm FontAwesome module. It is converted to an Element type (from Elm ui), though unfortunately the conversion from the Element type to the UiElement type seems a bit weird."
+        , UiFramework.fromElement (\_ -> Icon.view FontAwesome.Solid.cog)
+        , basicExampleCode
+        ]
+
+basicExampleCode : UiElement Msg
+basicExampleCode =
+    """
+import UiFramework
+import UiFramework.Icon as Icon
+import FontAwesome.Solid as Solid
+
+
+cogIcon =
+    UiFramework.fromElement (\\_ -> Icon.view FontAwesome.Solid.cog)"""
+        |> Util.uiHighlightCode "elm"
+
+gettingStarted : UiElement Msg 
+gettingStarted =
+    UiFramework.uiColumn
+        [ width fill
+        , Element.spacing 32
+        ]
+        [ Component.title "Getting Started"
+        , Component.wrappedText "A stylesheet needs to be added in order for the icons to render properly, though. the FontAwesome.Styles.css is a nice Html function you can easily put in your code (after rendering it from a UiElement type) to easily add in all the necessary styles. Here is an example:"
+        , gettingStartedCode
         ]
 
 
+gettingStartedCode : UiElement Msg 
+gettingStartedCode=
+    """
+import Browser
+import FontAwesome.Styles
+
+-- top level viewApplication (possibly put in Router.elm)
+viewApplication : Model -> SharedState -> Browser.Document Msg
+viewApplication model sharedState =
+    { title = "My Website"
+    , body =
+        [ FontAwesome.Styles.css
+        , view model sharedState
+        ]
+    }"""
+        |> Util.uiHighlightCode "elm"
+
+type DropdownState 
+    = AllDown
+
+realLifeUses : UiElement Msg 
+realLifeUses =
+    UiFramework.uiColumn
+        [ width fill
+        , Element.spacing 32
+        ]
+        [ Component.title "Using Icons"
+        , Component.wrappedText "Using icons may seem rather painful by itself, but they are easily implemented in Navbars and Buttons, for example."
+        , UiFramework.uiRow 
+            [ spacing 8 ]
+            [ Button.default
+                |> Button.withLabel "Github"
+                |> Button.withIcon FontAwesome.Brands.github
+                |> Button.view
+            , Button.default
+                |> Button.withLabel "Check"
+                |> Button.withIcon FontAwesome.Solid.check
+                |> Button.withRole Success
+                |> Button.view ]
+        , iconButtonCode
+        , Navbar.default NoOp
+            |> Navbar.withBrand (Element.text "Navbar")
+            |> Navbar.withMenuItems
+                [ Navbar.linkItem NoOp
+                    |> Navbar.withMenuIcon FontAwesome.Solid.home
+                    |> Navbar.withMenuTitle "Home"
+                , Navbar.linkItem NoOp
+                    |> Navbar.withMenuIcon FontAwesome.Solid.book
+                    |> Navbar.withMenuTitle "Blog"
+                , Navbar.linkItem NoOp
+                    |> Navbar.withMenuIcon FontAwesome.Solid.addressBook
+                    |> Navbar.withMenuTitle "Contact"
+                ]
+            |> Navbar.view {toggleMenuState = False, dropdownState = AllDown}
+        , iconNavbarCode
+        ]
+
+iconButtonCode : UiElement Msg 
+iconButtonCode=
+    """
+import FontAwesome.Brands
+import FontAwesome.Solid
+import UiFramework.Button as Button
+import Element exposing (spacing)
+
+iconButtons =
+    UiFramework.uiRow 
+        [ spacing 8 ]
+        [ Button.default
+            |> Button.withLabel "Github"
+            |> Button.withIcon FontAwesome.Brands.github
+            |> Button.view
+        , Button.default
+            |> Button.withLabel "Check"
+            |> Button.withIcon FontAwesome.Solid.check
+            |> Button.withRole Success
+            |> Button.view 
+        ]"""
+        |> Util.uiHighlightCode "elm"
+
+iconNavbarCode : UiElement Msg 
+iconNavbarCode =
+    """
+import UiFramework.Navbar as Navbar
+
+
+type DropdownState 
+    = AllDown
+
+
+type Msg
+    = ToggleNav
+    | NoOp
+
+Navbar.default NoOp
+    |> Navbar.withBrand (Element.text "Navbar")
+    |> Navbar.withMenuItems
+        [ Navbar.linkItem ToggleNav
+            |> Navbar.withMenuIcon FontAwesome.Solid.home
+            |> Navbar.withMenuTitle "Home"
+        , Navbar.linkItem NoOp
+            |> Navbar.withMenuIcon FontAwesome.Solid.book
+            |> Navbar.withMenuTitle "Blog"
+        , Navbar.linkItem NoOp
+            |> Navbar.withMenuIcon FontAwesome.Solid.addressBook
+            |> Navbar.withMenuTitle "Contact"
+        ]
+    |> Navbar.view {toggleMenuState = False, dropdownState = AllDown}"""
+        |> Util.uiHighlightCode "elm"
 
 -- UPDATE
 

@@ -15,4 +15,5 @@ pre {
     overflow: auto;
     display: block;
     max-width: 100%;
+    overflow: scroll;
 }

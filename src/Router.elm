@@ -331,7 +331,7 @@ update sharedState msg model =
                     navigateTo route sharedState model
             in
             ( { newModel | route = route }
-            , Cmd.batch [ newCmd, Ports.changedUrl () ]
+            , Cmd.batch [ newCmd ]
             , newSharedStateUpdate
             )
 
@@ -491,6 +491,8 @@ navigateTo route sharedState model =
 initWith : (subModel -> Page) -> (subMsg -> Msg) -> Model -> SharedStateUpdate -> ( subModel, Cmd subMsg ) -> ( Model, Cmd Msg, SharedStateUpdate )
 initWith toPage toMsg model sharedStateUpdate ( subModel, subCmd ) =
     ( { model | currentPage = toPage subModel }
-    , Cmd.map toMsg subCmd
+    , Cmd.batch
+        [Cmd.map toMsg subCmd
+        , Ports.changedUrl () ]
     , sharedStateUpdate
     )

@@ -15,7 +15,7 @@ import UiFramework.Navbar as Navbar
 import UiFramework.Types as Types
 import UiFramework.Typography as Typography
 import Util
-
+import View.Component as Component
 
 
 -- UIFRAMEWORK TYPE
@@ -99,7 +99,7 @@ header =
             Container.jumbotron
                 |> Container.withFullWidth
                 |> Container.withChild (Container.simple [] jumbotronContent)
-                |> Container.withExtraAttributes [ Background.color context.purpleColor ]
+                |> Container.withExtraAttrs [ Background.color context.purpleColor ]
                 |> Container.view
         )
 
@@ -129,10 +129,10 @@ description =
             ]
             [ Typography.h1
                 [ Element.width Element.fill, Font.center ]
-                (text "Lorem ipsum dolor sit amet")
+                (Component.wrappedText "Responsive, Scalable, and Composable Projects on the Web")
             , Typography.textLead
                 [ Element.width Element.fill, Font.center ]
-                (text "Elm Ui Bootstrap is better than Elm Bootstrap lol")
+                (Component.wrappedText "Elm Ui Bootstrap is better than Elm Bootstrap lol")
             , UiFramework.uiRow
                 [ Element.width Element.fill
                 , Element.paddingXY 0 64
