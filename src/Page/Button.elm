@@ -75,14 +75,14 @@ view sharedState model =
                     ]
                   <|
                     componentNavbar NavigateTo Routes.Button
-                , Container.simple [ width <| Element.fillPortion 6 ] <| content sharedState
+                , Container.simple [ width <| Element.fillPortion 6 ] content 
                 ]
         ]
         |> UiFramework.toElement (toContext sharedState)
 
 
-content : SharedState -> UiElement Msg
-content sharedState =
+content : UiElement Msg
+content =
     UiFramework.uiColumn
         [ width fill
         , spacing 64
@@ -479,8 +479,6 @@ buttonSizes =
             |> Button.withLabel "Github"
             |> Button.withIcon FontAwesome.Brands.github
             |> Button.view
-        ]
-        ...
         ]"""
         |> Util.uiHighlightCode "elm"
 
