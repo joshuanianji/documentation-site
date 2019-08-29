@@ -177,6 +177,7 @@ view toMsg model sharedState =
         , Font.color <| themeConfig.fontColor themeConfig.bodyBackground
         , Element.paddingXY 0 50
         , Font.family themeConfig.fontConfig.fontFamily
+        , Font.size 16 -- idk why I have to add this here. Somehow it automatically makes it 20??
         ]
         (content model sharedState)
         |> Element.layout
