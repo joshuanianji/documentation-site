@@ -35,11 +35,14 @@
 
         app.ports.changedUrl.subscribe(function () {
             console.log("url changed!")
+            // document.querySelectorAll('pre code').forEach((block) => {
+            //     hljs.highlightBlock(block);
+            // });
             setTimeout(function () {
                 document.querySelectorAll('pre code').forEach((block) => {
                     hljs.highlightBlock(block);
                 });
-            }, 50)
+            }, 0)
         });
     </script>
 </body>
