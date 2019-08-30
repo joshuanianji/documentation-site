@@ -1,5 +1,7 @@
 module NavbarTestSimple exposing (main)
 
+{-| Somehow Elm Analyze "encounters an error parsing the file" but it works and compiles so...-}
+
 import Browser
 import Browser.Events
 import Element exposing (Device)
