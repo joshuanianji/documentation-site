@@ -1,3 +1,5 @@
+module NavbarTestSimple exposing (main)
+
 import Browser
 import Browser.Events
 import Element exposing (Device)
@@ -57,7 +59,8 @@ init flags =
       , theme = defaultThemeConfig
       , navTheme = Light
       }
-    , Cmd.none)
+    , Cmd.none
+    )
 
 
 -- since there are no dropdowns we can just define our type like this
