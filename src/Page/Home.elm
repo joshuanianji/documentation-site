@@ -1,6 +1,6 @@
 module Page.Home exposing (Model, Msg(..), init, update, view)
 
-import Browser.Navigation as Navigation
+
 import Element exposing (Color, Element)
 import Element.Background as Background
 import Element.Font as Font
@@ -8,11 +8,7 @@ import Routes exposing (Route(..))
 import SharedState exposing (SharedState, SharedStateUpdate)
 import UiFramework exposing (UiContextual, WithContext, toElement)
 import UiFramework.Button as Button
-import UiFramework.ColorUtils as ColorUtils
-import UiFramework.Configuration exposing (ThemeConfig, defaultThemeConfig)
 import UiFramework.Container as Container
-import UiFramework.Navbar as Navbar
-import UiFramework.Types as Types
 import UiFramework.Typography as Typography
 import Util
 import View.Component as Component
@@ -201,7 +197,3 @@ update sharedState msg model =
 
         NoOp ->
             ( model, Cmd.none, SharedState.NoUpdate )
-
-
-ipsumText =
-    "Integer venenatis eget nisl in aliquet. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Maecenas eget accumsan leo, sit amet lacinia turpis. Aliquam nulla arcu, interdum et dui nec, venenatis sodales purus. Phasellus tincidunt, erat aliquam consectetur euismod, sapien ipsum volutpat nisi, non facilisis neque ligula sit amet mi."
