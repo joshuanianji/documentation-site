@@ -3,8 +3,7 @@ module Page.Table exposing (Context, Model, Msg(..), init, update, view)
 {-| Alert component
 -}
 
-
-import Element exposing (Color, Element, fill, height, width, spacing)
+import Element exposing (Color, Element, fill, height, spacing, width)
 import Element.Font as Font
 import Routes
 import SharedState exposing (SharedState, SharedStateUpdate(..))
@@ -93,6 +92,7 @@ content =
         , styles
         ]
 
+
 basicExample : UiElement Msg
 basicExample =
     UiFramework.uiColumn
@@ -157,11 +157,11 @@ tableColumn =
     , { head = Util.text "Column 3"
         , viewData = \\data -> UiFramework.uiParagraph [] [ Util.text data.column3 ]
         }
-    ]"""     
+    ]"""
         |> Util.uiHighlightCode "elm"
 
 
-styles : UiElement Msg 
+styles : UiElement Msg
 styles =
     UiFramework.uiColumn
         [ width fill
@@ -174,7 +174,8 @@ styles =
         , compactConfig
         ]
 
-stripedConfig : UiElement Msg 
+
+stripedConfig : UiElement Msg
 stripedConfig =
     UiFramework.uiColumn
         [ width fill
@@ -188,8 +189,9 @@ stripedConfig =
             |> Table.view information
         , stripedConfigCode
         ]
-    
-stripedConfigCode : UiElement Msg 
+
+
+stripedConfigCode : UiElement Msg
 stripedConfigCode =
     """
 simpleTable =
@@ -197,10 +199,10 @@ simpleTable =
         |> Table.withStriped
         |> Table.withColumns tableColumn
         |> Table.view information"""
-    |> Util.uiHighlightCode "elm"
+        |> Util.uiHighlightCode "elm"
 
 
-borderConfig : UiElement Msg 
+borderConfig : UiElement Msg
 borderConfig =
     UiFramework.uiColumn
         [ width fill
@@ -220,8 +222,9 @@ borderConfig =
             |> Table.view information
         , borderedCode
         ]
-    
-borderLessCode : UiElement Msg 
+
+
+borderLessCode : UiElement Msg
 borderLessCode =
     """
 simpleTable =
@@ -229,10 +232,10 @@ simpleTable =
         |> Table.withBorderless
         |> Table.withColumns tableColumn
         |> Table.view information"""
-    |> Util.uiHighlightCode "elm"
+        |> Util.uiHighlightCode "elm"
 
 
-borderedCode : UiElement Msg 
+borderedCode : UiElement Msg
 borderedCode =
     """
 simpleTable =
@@ -240,10 +243,10 @@ simpleTable =
         |> Table.withBordered
         |> Table.withColumns tableColumn
         |> Table.view information"""
-    |> Util.uiHighlightCode "elm"
+        |> Util.uiHighlightCode "elm"
 
 
-compactConfig : UiElement Msg 
+compactConfig : UiElement Msg
 compactConfig =
     UiFramework.uiColumn
         [ width fill
@@ -256,8 +259,9 @@ compactConfig =
             |> Table.view information
         , compactConfigCode
         ]
-    
-compactConfigCode : UiElement Msg 
+
+
+compactConfigCode : UiElement Msg
 compactConfigCode =
     """
 simpleTable =
@@ -265,46 +269,54 @@ simpleTable =
         |> Table.withCompact
         |> Table.withColumns tableColumn
         |> Table.view information"""
-    |> Util.uiHighlightCode "elm"
+        |> Util.uiHighlightCode "elm"
+
+
 
 -- table information
+
+
 tableColumn =
-                [ { head = Util.text "Role"
-                  , viewData = \data -> UiFramework.uiParagraph [ Font.bold ] [ Util.text data.role ]
-                  }
-                , { head = Util.text "Column 1"
-                  , viewData = \data -> UiFramework.uiParagraph [] [ Util.text data.column1 ]
-                  }
-                , { head = Util.text "Column 2"
-                  , viewData = \data -> UiFramework.uiParagraph [] [ Util.text data.column2 ]
-                  }
-                , { head = Util.text "Column 3"
-                  , viewData = \data -> UiFramework.uiParagraph [] [ Util.text data.column3 ]
-                  }
-                ]
+    [ { head = Util.text "Role"
+      , viewData = \data -> UiFramework.uiParagraph [ Font.bold ] [ Util.text data.role ]
+      }
+    , { head = Util.text "Column 1"
+      , viewData = \data -> UiFramework.uiParagraph [] [ Util.text data.column1 ]
+      }
+    , { head = Util.text "Column 2"
+      , viewData = \data -> UiFramework.uiParagraph [] [ Util.text data.column2 ]
+      }
+    , { head = Util.text "Column 3"
+      , viewData = \data -> UiFramework.uiParagraph [] [ Util.text data.column3 ]
+      }
+    ]
+
 
 information =
-                [ { role = "Row 1"
-                  , column1 = "column 1"
-                  , column2 = "column 2"
-                  , column3 = "column 3"
-                  }
-                , { role = "Row 2"
-                  , column1 = "column 1"
-                  , column2 = "column 2"
-                  , column3 = "column 3"
-                  }
-                , { role = "Row 3"
-                  , column1 = "column 1"
-                  , column2 = "column 2"
-                  , column3 = "column 3"
-                  }
-                , { role = "Row 4"
-                  , column1 = "column 1"
-                  , column2 = "column 2"
-                  , column3 = "column 3"
-                  }
-                ]
+    [ { role = "Row 1"
+      , column1 = "column 1"
+      , column2 = "column 2"
+      , column3 = "column 3"
+      }
+    , { role = "Row 2"
+      , column1 = "column 1"
+      , column2 = "column 2"
+      , column3 = "column 3"
+      }
+    , { role = "Row 3"
+      , column1 = "column 1"
+      , column2 = "column 2"
+      , column3 = "column 3"
+      }
+    , { role = "Row 4"
+      , column1 = "column 1"
+      , column2 = "column 2"
+      , column3 = "column 3"
+      }
+    ]
+
+
+
 -- UPDATE
 
 
@@ -320,4 +332,4 @@ update sharedState msg model =
             ( model, Cmd.none, NoUpdate )
 
         NavigateTo route ->
-            ( model, Util.navigate sharedState.navKey route , NoUpdate )
+            ( model, Util.navigate sharedState.navKey route, NoUpdate )

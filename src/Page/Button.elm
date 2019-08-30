@@ -75,7 +75,7 @@ view sharedState model =
                     ]
                   <|
                     componentNavbar NavigateTo Routes.Button
-                , Container.simple [ width <| Element.fillPortion 6 ] content 
+                , Container.simple [ width <| Element.fillPortion 6 ] content
                 ]
         ]
         |> UiFramework.toElement (toContext sharedState)

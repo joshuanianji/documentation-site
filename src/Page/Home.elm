@@ -1,6 +1,5 @@
 module Page.Home exposing (Model, Msg(..), init, update, view)
 
-
 import Element exposing (Color, Element)
 import Element.Background as Background
 import Element.Font as Font
@@ -12,6 +11,7 @@ import UiFramework.Container as Container
 import UiFramework.Typography as Typography
 import Util
 import View.Component as Component
+
 
 
 -- UIFRAMEWORK TYPE
@@ -137,7 +137,7 @@ description =
                 [ UiFramework.uiColumn
                     [ Element.width Element.fill
                     , Element.spacing 16
-                , Element.alignTop
+                    , Element.alignTop
                     ]
                     [ Typography.h4
                         []
@@ -148,7 +148,7 @@ description =
                 , UiFramework.uiColumn
                     [ Element.width Element.fill
                     , Element.spacing 16
-                , Element.alignTop
+                    , Element.alignTop
                     ]
                     [ Typography.h4
                         []

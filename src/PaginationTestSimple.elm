@@ -3,13 +3,13 @@ module PaginationTestSimple exposing (main)
 import Browser
 import Browser.Events
 import Element exposing (Device)
-import Html exposing (Html)
 import FontAwesome.Solid
 import FontAwesome.Styles
+import Html exposing (Html)
 import UiFramework
 import UiFramework.Configuration exposing (ThemeConfig, defaultThemeConfig)
-import UiFramework.ResponsiveUtils exposing (classifyDevice)
 import UiFramework.Pagination as Pagination exposing (PaginationState)
+import UiFramework.ResponsiveUtils exposing (classifyDevice)
 
 
 main : Program Flags Model Msg
@@ -22,6 +22,7 @@ main =
         }
 
 
+
 -- keeps track of the state of the navbar in the model
 
 
@@ -30,6 +31,7 @@ type alias Model =
     , device : Device
     , theme : ThemeConfig
     }
+
 
 type alias Flags =
     WindowSize
@@ -42,20 +44,20 @@ type alias WindowSize =
 
 
 {-| toggleMenuState dictates whether the navbar is "collapsed" or not
-    dropdownState dictates the dropdowns, but for now we don't have any
+dropdownState dictates the dropdowns, but for now we don't have any
 -}
-
-
-init : Flags -> (Model, Cmd Msg)
+init : Flags -> ( Model, Cmd Msg )
 init flags =
-    ( { paginationState = 
-        { currentSliceNumber = 0 -- starts from 0
-        , numberOfSlices = 10
-        }
+    ( { paginationState =
+            { currentSliceNumber = 0 -- starts from 0
+            , numberOfSlices = 10
+            }
       , device = classifyDevice flags
       , theme = defaultThemeConfig
       }
-    , Cmd.none)
+    , Cmd.none
+    )
+
 
 
 -- since there are no dropdowns we can just define our type like this
@@ -64,39 +66,44 @@ init flags =
 type DropdownState
     = NoDropdown
 
+
+
 -- toggle is when the navbar collapses the menu
 
 
-type Msg 
+type Msg
     = PaginationMsg Int
     | WindowSizeChange WindowSize
     | NoOp
 
 
+
 -- handle Navbar messages
 
 
-update : Msg -> Model -> (Model, Cmd Msg)
+update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-    case msg of 
+    case msg of
         PaginationMsg int ->
             ( { model | paginationState = updatePaginationSlice int model.paginationState }
             , Cmd.none
             )
 
         WindowSizeChange windowSize ->
-            ( { model | device = classifyDevice windowSize}
-            , Cmd.none 
+            ( { model | device = classifyDevice windowSize }
+            , Cmd.none
             )
-        
+
         NoOp ->
             ( model, Cmd.none )
 
+
 updatePaginationSlice : Int -> PaginationState -> PaginationState
-updatePaginationSlice newSlice state = 
+updatePaginationSlice newSlice state =
     { state | currentSliceNumber = newSlice }
 
-view : Model -> Html Msg 
+
+view : Model -> Html Msg
 view model =
     let
         context =
@@ -104,7 +111,10 @@ view model =
             , parentRole = Nothing
             , themeConfig = model.theme
             }
-        state = model.paginationState
+
+        state =
+            model.paginationState
+
         ( startNumber, endNumber ) =
             if state.numberOfSlices <= 5 then
                 ( 0, state.numberOfSlices - 1 )
@@ -118,7 +128,7 @@ view model =
             (if startNumber > 0 then
                 [ Pagination.EllipsisItem ]
 
-            else
+             else
                 []
             )
                 ++ List.map (\index -> Pagination.NumberItem index) (List.range startNumber endNumber)
@@ -127,21 +137,20 @@ view model =
 
                     else
                         []
-                )
-                    
+                   )
     in
     Pagination.default PaginationMsg
         |> Pagination.withItems itemList
         |> Pagination.withExtraAttrs [ Element.centerX ]
         |> Pagination.view state
-    |> UiFramework.toElement context
-    |> Element.layout []
-    |> (\elem ->
-        Html.div []
-            [ FontAwesome.Styles.css -- still need to import fontAwesome styles
-            , elem 
-            ]
-        )
+        |> UiFramework.toElement context
+        |> Element.layout []
+        |> (\elem ->
+                Html.div []
+                    [ FontAwesome.Styles.css -- still need to import fontAwesome styles
+                    , elem
+                    ]
+           )
 
 
 

@@ -3,7 +3,7 @@ module Page.Typography exposing (Context, Model, Msg(..), init, update, view)
 {-| Alert component
 -}
 
-import Element exposing (Color, Element, fill, height, width, spacing)
+import Element exposing (Color, Element, fill, height, spacing, width)
 import Routes
 import SharedState exposing (SharedState, SharedStateUpdate(..))
 import UiFramework exposing (UiContextual, WithContext, toElement)
@@ -99,7 +99,7 @@ headers =
         ]
         [ Component.title "Headers"
         , Component.section "Displays - or Very Large Headers"
-        , UiFramework.uiColumn 
+        , UiFramework.uiColumn
             [ spacing 16 ]
             [ Typography.display1 [] (Util.text "Display1")
             , Typography.display2 [] (Util.text "Display2")
@@ -108,7 +108,7 @@ headers =
             ]
         , displayCode
         , Component.section "Headers - the Regular H1's"
-        , UiFramework.uiColumn 
+        , UiFramework.uiColumn
             [ spacing 16 ]
             [ Typography.h1 [] (Util.text "H1")
             , Typography.h2 [] (Util.text "H2")
@@ -121,7 +121,7 @@ headers =
         ]
 
 
-displayCode : UiElement Msg 
+displayCode : UiElement Msg
 displayCode =
     """
 import UiFramework
@@ -140,10 +140,10 @@ displayExamples =
         , Typography.display3 [] (text "Display3")
         , Typography.display4 [] (text "Display4")
         ]"""
-    |> Util.uiHighlightCode "elm"
+        |> Util.uiHighlightCode "elm"
 
 
-headerCode : UiElement Msg 
+headerCode : UiElement Msg
 headerCode =
     """
 headerExamples = 
@@ -156,20 +156,20 @@ headerExamples =
         , Typography.h5 [] (text "H4")
         , Typography.h6 [] (text "H4")
         ]"""
-    |> Util.uiHighlightCode "elm"
+        |> Util.uiHighlightCode "elm"
 
 
-text : UiElement Msg 
+text : UiElement Msg
 text =
     UiFramework.uiColumn
         [ width fill
         , Element.spacing 32
         ]
         [ Component.title "Text blocks"
-        , UiFramework.uiColumn 
+        , UiFramework.uiColumn
             [ spacing 16 ]
             [ Typography.textLead [] (Util.text "Text Lead - Use me below titles!")
-            , UiFramework.uiParagraph [] [Util.text "Regular text!"]
+            , UiFramework.uiParagraph [] [ Util.text "Regular text!" ]
             , Typography.textSmall [] (Util.text "Small text!")
             , Typography.textExtraSmall [] (Util.text "Super small text!")
             ]
@@ -177,7 +177,7 @@ text =
         ]
 
 
-textCode : UiElement Msg 
+textCode : UiElement Msg
 textCode =
     """
 text : String -> WithContext context msg
@@ -193,7 +193,8 @@ textExamples =
         , Typography.textSmall [] (text "Small text!")
         , Typography.textExtraSmall [] (text "Super small text!")
         ]"""
-    |> Util.uiHighlightCode "elm"
+        |> Util.uiHighlightCode "elm"
+
 
 
 -- UPDATE

@@ -493,7 +493,8 @@ initWith : (subModel -> Page) -> (subMsg -> Msg) -> Model -> SharedStateUpdate -
 initWith toPage toMsg model sharedStateUpdate ( subModel, subCmd ) =
     ( { model | currentPage = toPage subModel }
     , Cmd.batch
-        [Cmd.map toMsg subCmd
-        , Ports.changedUrl () ]
+        [ Cmd.map toMsg subCmd
+        , Ports.changedUrl ()
+        ]
     , sharedStateUpdate
     )

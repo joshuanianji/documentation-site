@@ -3,7 +3,7 @@ module Page.Toasty exposing (Context, Model, Msg(..), init, update, view)
 {-| Alert component
 -}
 
-import Element exposing (Color, Element, fill, height, width, spacing)
+import Element exposing (Color, Element, fill, height, spacing, width)
 import Routes
 import SharedState exposing (SharedState, SharedStateUpdate(..))
 import UiFramework exposing (UiContextual, WithContext, toElement)
@@ -91,16 +91,18 @@ content =
         , basicExample
         ]
 
-gettingStarted : UiElement Msg 
+
+gettingStarted : UiElement Msg
 gettingStarted =
-    UiFramework.uiColumn 
-        [ width fill 
-        , Element.spacing 32 
+    UiFramework.uiColumn
+        [ width fill
+        , Element.spacing 32
         ]
         [ Component.title "Getting Started"
         , Component.wrappedText "We use the module pablen/toasty to use toasties."
         , installToastyCode
         ]
+
 
 basicExample : UiElement Msg
 basicExample =
@@ -108,7 +110,7 @@ basicExample =
         [ width fill
         , Element.spacing 32
         ]
-        [ Component.title "Basic Example" 
+        [ Component.title "Basic Example"
         , Component.wrappedText "Toasties require a fair bit of setup, and they need a css file to work (https://github.com/pablen/toasty/blob/master/src/Toasty/Defaults.css), so here's a simple but fully functional bit of code that shows a toasty when a button is clicked. "
         , toastyElmCode
         , Component.wrappedText "Include the Toasty css file in your project and include the path in the Html file."
@@ -122,11 +124,11 @@ installToastyCode : UiElement Msg
 installToastyCode =
     """
 elm install pablen/toasty"""
-    |> Util.uiHighlightCode "bash"
+        |> Util.uiHighlightCode "bash"
 
 
-toastyElmCode :UiElement Msg 
-toastyElmCode=
+toastyElmCode : UiElement Msg
+toastyElmCode =
     """
 module Main exposing (main)
 
@@ -253,10 +255,10 @@ subscriptions _ =
         (\\x y ->
             WindowSizeChange (WindowSize x y)
         )"""
-    |> Util.uiHighlightCode "elm"
+        |> Util.uiHighlightCode "elm"
 
 
-toastyHtmlCode : UiElement Msg 
+toastyHtmlCode : UiElement Msg
 toastyHtmlCode =
     """
 <!DOCTYPE html>
@@ -283,13 +285,16 @@ toastyHtmlCode =
 </body>
 
 </html>"""
-    |> Util.uiHighlightCode "html"
+        |> Util.uiHighlightCode "html"
 
-elmLiveCode : UiElement Msg 
-elmLiveCode =   
+
+elmLiveCode : UiElement Msg
+elmLiveCode =
     """
 elm-live [PATH/TO/Main.elm] -- --output=elm.js"""
-    |> Util.uiHighlightCode "bash"
+        |> Util.uiHighlightCode "bash"
+
+
 
 -- UPDATE
 

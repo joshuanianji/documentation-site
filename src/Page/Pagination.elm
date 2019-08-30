@@ -3,8 +3,7 @@ module Page.Pagination exposing (Context, Model, Msg(..), init, update, view)
 {-| Alert component
 -}
 
-
-import Element exposing (Color, Element, fill, height, width, spacing)
+import Element exposing (Color, Element, fill, height, spacing, width)
 import Element.Font as Font
 import Routes
 import SharedState exposing (SharedState, SharedStateUpdate(..))
@@ -14,7 +13,7 @@ import UiFramework.Pagination as Pagination exposing (PaginationState)
 import UiFramework.Types exposing (Role(..))
 import UiFramework.Typography as Typography
 import Util
-import View.Component  as Component exposing (componentNavbar, viewHeader)
+import View.Component as Component exposing (componentNavbar, viewHeader)
 
 
 
@@ -35,9 +34,13 @@ type alias Model =
 
 init : ( Model, Cmd Msg )
 init =
-    ( {paginationState = { currentSliceNumber = 0 -- starts from 0
-    , numberOfSlices = 10
-    }}, Cmd.none )
+    ( { paginationState =
+            { currentSliceNumber = 0 -- starts from 0
+            , numberOfSlices = 10
+            }
+      }
+    , Cmd.none
+    )
 
 
 
@@ -82,14 +85,14 @@ view sharedState model =
                     ]
                   <|
                     componentNavbar NavigateTo Routes.Pagination
-                , Container.simple [ width <| Element.fillPortion 6 ] <| content 
+                , Container.simple [ width <| Element.fillPortion 6 ] <| content
                 ]
         ]
         |> UiFramework.toElement (toContext model sharedState)
 
 
 content : UiElement Msg
-content  =
+content =
     UiFramework.uiColumn
         [ width fill
         , spacing 64
@@ -109,14 +112,15 @@ basicExample =
         , Component.wrappedText "Paginations need states and boilerplate code to handle its responsive behaviour, but for now, let's make a simple static pagination. A basic example of that would look like this."
         , Component.wrappedText "Note that you still need to import the FontAwesome stylesheet into your code, as the buttons rely on their icons."
         , Pagination.default (\_ -> NoOp)
-            |> Pagination.withItems 
+            |> Pagination.withItems
                 [ Pagination.NumberItem 0
                 , Pagination.NumberItem 1
                 , Pagination.EllipsisItem
                 , Pagination.NumberItem 8
-                , Pagination.NumberItem 9 ]
+                , Pagination.NumberItem 9
+                ]
             |> Pagination.withExtraAttrs [ Element.centerX ]
-            |> Pagination.view 
+            |> Pagination.view
                 { currentSliceNumber = 0 -- starts from 0
                 , numberOfSlices = 10
                 }
@@ -152,10 +156,10 @@ staticPagination =
         |> Util.uiHighlightCode "elm"
 
 
-responsiveExample : UiElement Msg 
+responsiveExample : UiElement Msg
 responsiveExample =
-    UiFramework.flatMap 
-        (\context ->    
+    UiFramework.flatMap
+        (\context ->
             UiFramework.uiColumn
                 [ width fill
                 , Element.spacing 32
@@ -163,7 +167,9 @@ responsiveExample =
                 [ Component.title "Responsive Example"
                 , Component.wrappedText "A responsive pagination only needs the pagination state to calculate everything. Below is an example of one."
                 , let
-                    state = context.paginationState
+                    state =
+                        context.paginationState
+
                     ( startNumber, endNumber ) =
                         if state.numberOfSlices <= 5 then
                             ( 0, state.numberOfSlices - 1 )
@@ -177,7 +183,7 @@ responsiveExample =
                         (if startNumber > 0 then
                             [ Pagination.EllipsisItem ]
 
-                        else
+                         else
                             []
                         )
                             ++ List.map (\index -> Pagination.NumberItem index) (List.range startNumber endNumber)
@@ -186,34 +192,34 @@ responsiveExample =
 
                                 else
                                     []
-                            )
-                in
-                Pagination.default PaginationMsg
+                               )
+                  in
+                  Pagination.default PaginationMsg
                     |> Pagination.withItems itemList
                     |> Pagination.withExtraAttrs [ Element.centerX ]
                     |> Pagination.view state
                     |> (\paginationElement ->
-                    UiFramework.uiColumn
-                        [ Element.width Element.fill
-                        , Element.spacing 20
-                        ]
-                        [ UiFramework.uiParagraph
-                            [ Font.center ]
-                            [ Util.text "Currently on slice #"
-                            , Util.text <| String.fromInt (state.currentSliceNumber + 1)
-                            ]
-                        , paginationElement
-                        ]
-               )
+                            UiFramework.uiColumn
+                                [ Element.width Element.fill
+                                , Element.spacing 20
+                                ]
+                                [ UiFramework.uiParagraph
+                                    [ Font.center ]
+                                    [ Util.text "Currently on slice #"
+                                    , Util.text <| String.fromInt (state.currentSliceNumber + 1)
+                                    ]
+                                , paginationElement
+                                ]
+                       )
                 , Component.wrappedText "Paginations need the full model-view-update architecture to function, so here's a complete code set to deal with a simple responsive pagination."
                 , responsiveExampleCode
                 , Component.wrappedText "Because of the flags, you'll also need to configure an index.html file. Below is the setup you can use yourself."
                 , basicHtmlCode
                 ]
-            )
-    
+        )
 
-responsiveExampleCode : UiElement Msg 
+
+responsiveExampleCode : UiElement Msg
 responsiveExampleCode =
     """
 import Browser
@@ -383,8 +389,7 @@ subscriptions _ =
         |> Util.uiHighlightCode "elm"
 
 
-
-basicHtmlCode : UiElement Msg 
+basicHtmlCode : UiElement Msg
 basicHtmlCode =
     """
 <!DOCTYPE html>
@@ -415,6 +420,8 @@ basicHtmlCode =
 </html>"""
         |> Util.uiHighlightCode "html"
 
+
+
 -- UPDATE
 
 
@@ -431,14 +438,15 @@ update sharedState msg model =
             ( model, Cmd.none, NoUpdate )
 
         NavigateTo route ->
-            ( model, Util.navigate sharedState.navKey route , NoUpdate )
-        
+            ( model, Util.navigate sharedState.navKey route, NoUpdate )
+
         PaginationMsg int ->
             ( { model | paginationState = updatePaginationSlice int model.paginationState }
             , Cmd.none
             , NoUpdate
             )
 
+
 updatePaginationSlice : Int -> PaginationState -> PaginationState
-updatePaginationSlice newSlice state = 
+updatePaginationSlice newSlice state =
     { state | currentSliceNumber = newSlice }

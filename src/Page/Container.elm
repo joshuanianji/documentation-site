@@ -3,10 +3,8 @@ module Page.Container exposing (Context, Model, Msg(..), init, update, view)
 {-| Alert component
 -}
 
-
-import Element exposing (Color, Element, fill, height, width, spacing)
+import Element exposing (Color, Element, fill, height, spacing, width)
 import Element.Background as Background
-import View.Component as Component
 import Element.Border as Border
 import Routes
 import SharedState exposing (SharedState, SharedStateUpdate(..))
@@ -15,7 +13,7 @@ import UiFramework.Container as Container
 import UiFramework.Types exposing (Role(..))
 import UiFramework.Typography as Typography
 import Util
-import View.Component exposing (componentNavbar, viewHeader)
+import View.Component as Component exposing (componentNavbar, viewHeader)
 
 
 
@@ -78,14 +76,14 @@ view sharedState model =
                     ]
                   <|
                     componentNavbar NavigateTo Routes.Container
-                , Container.simple [ width <| Element.fillPortion 6 ] <| content 
+                , Container.simple [ width <| Element.fillPortion 6 ] <| content
                 ]
         ]
         |> UiFramework.toElement (toContext sharedState)
 
 
 content : UiElement Msg
-content  =
+content =
     UiFramework.uiColumn
         [ width fill
         , spacing 64
@@ -105,10 +103,12 @@ basicExample =
         , Component.wrappedText "Default containers are responsive, with fixed max-widths that change at each breakpoint. Imo, container's are dwarved by the uiColumn and uiRow elements, and are not really used anywhere other than being a top-level parent element that dictates the width of the content."
         , UiFramework.flatMap
             (\context ->
-                Container.simple 
-                [Background.color context.purpleColor
-                , Element.height (Element.px 20)] 
-                UiFramework.uiNone)
+                Container.simple
+                    [ Background.color context.purpleColor
+                    , Element.height (Element.px 20)
+                    ]
+                    UiFramework.uiNone
+            )
         , basicExampleCode
         ]
 
@@ -172,7 +172,7 @@ childConfig =
         ]
         [ Component.section "Children"
         , Component.wrappedText "Containers can only hold 1 child element, since uiRow and uiColumn are used to hold multiple children."
-        , Container.default 
+        , Container.default
             |> Container.withChild (Util.text "Hello")
             |> Container.view
         , childConfigCode
@@ -188,7 +188,8 @@ simpleContainer =
             |> Container.view"""
         |> Util.uiHighlightCode "elm"
 
-fullWidthConfig : UiElement Msg 
+
+fullWidthConfig : UiElement Msg
 fullWidthConfig =
     UiFramework.uiColumn
         [ spacing 16
@@ -207,7 +208,8 @@ fullWidthConfig =
         , fullWidthConfigCode
         ]
 
-fullWidthConfigCode : UiElement Msg 
+
+fullWidthConfigCode : UiElement Msg
 fullWidthConfigCode =
     """
 import Element.Border as Border
@@ -220,7 +222,7 @@ bigBorderContainer =
         |> Util.uiHighlightCode "elm"
 
 
-jumbotronConfig : UiElement Msg 
+jumbotronConfig : UiElement Msg
 jumbotronConfig =
     UiFramework.uiColumn
         [ spacing 16
@@ -230,7 +232,7 @@ jumbotronConfig =
         , Component.wrappedText "Jumbotrons highlight content by changing a background. That's really all it does."
         , Container.jumbotron
             |> Container.withFullWidth
-            |> Container.withChild 
+            |> Container.withChild
                 (UiFramework.uiColumn []
                     [ Typography.display4 [] (Util.text "Jumbotron")
                     , Typography.textLead [] (Util.text "grab attention with these backgrounds.")
@@ -241,7 +243,7 @@ jumbotronConfig =
         ]
 
 
-jumbotronConfigCode : UiElement Msg 
+jumbotronConfigCode : UiElement Msg
 jumbotronConfigCode =
     """
 import UiFramework.Typography as Typography
@@ -264,6 +266,7 @@ getViewerAttention =
             )
         |> Container.view"""
         |> Util.uiHighlightCode "elm"
+
 
 attributeConfigs : UiElement Msg
 attributeConfigs =
@@ -317,4 +320,4 @@ update sharedState msg model =
             ( model, Cmd.none, NoUpdate )
 
         NavigateTo route ->
-            ( model, Util.navigate sharedState.navKey route , NoUpdate )
+            ( model, Util.navigate sharedState.navKey route, NoUpdate )

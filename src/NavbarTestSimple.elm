@@ -3,14 +3,14 @@ module NavbarTestSimple exposing (main)
 import Browser
 import Browser.Events
 import Element exposing (Device)
-import Html exposing (Html)
 import FontAwesome.Solid
 import FontAwesome.Styles
+import Html exposing (Html)
 import UiFramework
 import UiFramework.Configuration exposing (ThemeConfig, defaultThemeConfig)
-import UiFramework.ResponsiveUtils exposing (classifyDevice)
-import UiFramework.Navbar as Navbar exposing (NavbarState)
 import UiFramework.Dropdown as Dropdown
+import UiFramework.Navbar as Navbar exposing (NavbarState)
+import UiFramework.ResponsiveUtils exposing (classifyDevice)
 import UiFramework.Types exposing (Role(..))
 
 
@@ -24,6 +24,7 @@ main =
         }
 
 
+
 -- keeps track of the state of the navbar in the model
 
 
@@ -33,6 +34,7 @@ type alias Model =
     , theme : ThemeConfig
     , navTheme : Role
     }
+
 
 type alias Flags =
     WindowSize
@@ -45,22 +47,21 @@ type alias WindowSize =
 
 
 {-| toggleMenuState dictates whether the navbar is "collapsed" or not
-    dropdownState dictates the dropdowns, but for now we don't have any
+dropdownState dictates the dropdowns, but for now we don't have any
 -}
-
-
-init : Flags -> (Model, Cmd Msg)
+init : Flags -> ( Model, Cmd Msg )
 init flags =
-    ( { navState = 
-        { toggleMenuState = False
-        , dropdownState = AllClosed
-        }
+    ( { navState =
+            { toggleMenuState = False
+            , dropdownState = AllClosed
+            }
       , device = classifyDevice flags
       , theme = defaultThemeConfig
       , navTheme = Light
       }
     , Cmd.none
     )
+
 
 
 -- since there are no dropdowns we can just define our type like this
@@ -70,10 +71,12 @@ type DropdownState
     = AllClosed
     | ThemeSelectOpen
 
+
+
 -- toggle is when the navbar collapses the menu
 
 
-type Msg 
+type Msg
     = WindowSizeChange WindowSize
     | ToggleNavbar -- toggle when the navbar collapses the menu
     | ToggleDropdown -- Toggle navbar dropdown(s)
@@ -81,23 +84,25 @@ type Msg
     | NoOp
 
 
+
 -- handle Navbar messages
 
 
-update : Msg -> Model -> (Model, Cmd Msg)
+update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-    case msg of 
+    case msg of
         WindowSizeChange windowSize ->
-            ( { model | device = classifyDevice windowSize}
-            , Cmd.none 
+            ( { model | device = classifyDevice windowSize }
+            , Cmd.none
             )
-        
 
         ToggleNavbar ->
             let
-                navState = model.navState
+                navState =
+                    model.navState
+
                 newNavState =
-                    { navState | toggleMenuState = not navState.toggleMenuState}
+                    { navState | toggleMenuState = not navState.toggleMenuState }
             in
             ( { model | navState = newNavState }
             , Cmd.none
@@ -105,29 +110,33 @@ update msg model =
 
         ToggleDropdown ->
             let
-                navState = model.navState
-                newDropdown = 
+                navState =
+                    model.navState
+
+                newDropdown =
                     if navState.dropdownState == ThemeSelectOpen then
                         AllClosed
 
                     else
                         ThemeSelectOpen
-                newNavState = { navState | dropdownState = newDropdown}
+
+                newNavState =
+                    { navState | dropdownState = newDropdown }
             in
-            ( { model | navState = newNavState}
+            ( { model | navState = newNavState }
             , Cmd.none
             )
-        
+
         ChangeNavTheme role ->
-            update 
+            update
                 ToggleDropdown
                 { model | navTheme = role }
-        
+
         NoOp ->
             ( model, Cmd.none )
 
 
-view : Model -> Html Msg 
+view : Model -> Html Msg
 view model =
     let
         context =
@@ -140,7 +149,8 @@ view model =
         |> Navbar.withBrand (Element.text "Navbar")
         |> Navbar.withBackground model.navTheme
         |> Navbar.withMenuItems
-            [ Navbar.linkItem NoOp -- Navbar.linkItem accepts a msg type that dictates its action when clicked
+            [ Navbar.linkItem NoOp
+                -- Navbar.linkItem accepts a msg type that dictates its action when clicked
                 |> Navbar.withMenuIcon FontAwesome.Solid.home
                 |> Navbar.withMenuTitle "Home"
             , Navbar.linkItem NoOp
@@ -163,11 +173,11 @@ view model =
         |> UiFramework.toElement context
         |> Element.layout []
         |> (\elem ->
-            Html.div []
-                [ FontAwesome.Styles.css
-                , elem 
-                ]
-            )
+                Html.div []
+                    [ FontAwesome.Styles.css
+                    , elem
+                    ]
+           )
 
 
 

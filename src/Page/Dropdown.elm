@@ -3,14 +3,13 @@ module Page.Dropdown exposing (Context, Model, Msg(..), init, update, view)
 {-| Dropdown component
 -}
 
-
-import Element exposing (Color, Element, fill, height, width, spacing)
+import Element exposing (Color, Element, fill, height, spacing, width)
+import FontAwesome.Solid
 import Routes
 import SharedState exposing (SharedState, SharedStateUpdate(..))
 import UiFramework exposing (UiContextual, WithContext, toElement)
 import UiFramework.Container as Container
 import UiFramework.Dropdown as Dropdown
-import FontAwesome.Solid
 import UiFramework.Types exposing (Role(..))
 import UiFramework.Typography as Typography
 import Util
@@ -30,13 +29,14 @@ type alias UiElement msg =
 
 
 type alias Model =
-    {simpleDropdownState : Bool}
+    { simpleDropdownState : Bool }
 
 
 init : ( Model, Cmd Msg )
 init =
-    ( {simpleDropdownState = False}
-    , Cmd.none )
+    ( { simpleDropdownState = False }
+    , Cmd.none
+    )
 
 
 
@@ -45,7 +45,8 @@ init =
 
 type alias Context =
     { purpleColor : Color
-    , simpleDropdownState : Bool }
+    , simpleDropdownState : Bool
+    }
 
 
 toContext : Model -> SharedState -> UiContextual Context
@@ -109,7 +110,7 @@ basicExample =
                 , Dropdown.default ToggleSimpleDropdown True
                     |> Dropdown.withTitle "Static Dropdown"
                     |> Dropdown.withIcon FontAwesome.Solid.appleAlt
-                    |> Dropdown.withMenuItems 
+                    |> Dropdown.withMenuItems
                         [ Dropdown.menuLinkItem NoOp
                             |> Dropdown.withMenuTitle "Item 1"
                         , Dropdown.menuLinkItem NoOp
@@ -188,7 +189,7 @@ update sharedState msg model =
             ( model, Cmd.none, NoUpdate )
 
         NavigateTo route ->
-            ( model, Util.navigate sharedState.navKey route , NoUpdate )
-        
+            ( model, Util.navigate sharedState.navKey route, NoUpdate )
+
         ToggleSimpleDropdown ->
-            ( {model | simpleDropdownState = not model.simpleDropdownState}, Cmd.none, NoUpdate )
+            ( { model | simpleDropdownState = not model.simpleDropdownState }, Cmd.none, NoUpdate )

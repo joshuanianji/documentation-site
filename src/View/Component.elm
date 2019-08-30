@@ -49,12 +49,12 @@ viewHeader pageContent =
 componentNavbar : (Route -> msg) -> Route -> WithContext c msg
 componentNavbar navigateToMsg route =
     UiFramework.uiColumn
-        [ ]
+        []
     <|
         List.map
             (\( r, name ) ->
                 if r == route then
-                    Typography.textSmall [ Element.pointer , Element.padding 8] (Util.text name)
+                    Typography.textSmall [ Element.pointer, Element.padding 8 ] (Util.text name)
 
                 else
                     Typography.textSmall

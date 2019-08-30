@@ -3,20 +3,18 @@ module Page.Navbar exposing (Context, Model, Msg(..), init, update, view)
 {-| Navbar component
 -}
 
-
-import Element exposing (Color, Element, fill, height, width,spacing)
+import Element exposing (Color, Element, fill, height, spacing, width)
+import FontAwesome.Solid
 import Routes
 import SharedState exposing (SharedState, SharedStateUpdate)
 import UiFramework exposing (UiContextual, WithContext, toElement)
 import UiFramework.Container as Container
+import UiFramework.Dropdown as Dropdown
 import UiFramework.Navbar as Navbar
 import UiFramework.Types exposing (Role(..))
 import UiFramework.Typography as Typography
 import Util
 import View.Component as Component exposing (componentNavbar, viewHeader)
-import FontAwesome.Solid
-import UiFramework.Dropdown as Dropdown
-
 
 
 
@@ -34,15 +32,18 @@ type alias UiElement msg =
 type alias Model =
     { complexNavTheme : Role
     , complexNavMenuState : Bool
-    , complexNavDropdownState : ComplexDropdownState}
+    , complexNavDropdownState : ComplexDropdownState
+    }
 
 
 init : ( Model, Cmd Msg )
 init =
     ( { complexNavTheme = Light
-    , complexNavMenuState = False
-        , complexNavDropdownState = AllClosed}
-    , Cmd.none )
+      , complexNavMenuState = False
+      , complexNavDropdownState = AllClosed
+      }
+    , Cmd.none
+    )
 
 
 
@@ -52,7 +53,8 @@ init =
 type alias Context =
     { purpleColor : Color
     , complexNavTheme : Role
-    , complexNavState : Navbar.NavbarState ComplexDropdownState }
+    , complexNavState : Navbar.NavbarState ComplexDropdownState
+    }
 
 
 toContext : Model -> SharedState -> UiContextual Context
@@ -62,9 +64,10 @@ toContext model sharedState =
     , themeConfig = SharedState.getThemeConfig sharedState.theme
     , purpleColor = sharedState.purpleColor
     , complexNavTheme = model.complexNavTheme
-    , complexNavState = 
+    , complexNavState =
         { toggleMenuState = model.complexNavMenuState
-        , dropdownState = model.complexNavDropdownState}
+        , dropdownState = model.complexNavDropdownState
+        }
     }
 
 
@@ -106,11 +109,13 @@ content =
         , complexExample
         ]
 
+
 type SimpleDropdownState
     = NoDropdowns
 
-basicExample : UiElement Msg 
-basicExample=   
+
+basicExample : UiElement Msg
+basicExample =
     UiFramework.uiColumn
         [ width fill
         , Element.spacing 32
@@ -132,14 +137,15 @@ basicExample=
                 , Navbar.linkItem NoOp
                     |> Navbar.withMenuTitle "No Icon"
                 ]
-            |> Navbar.view {toggleMenuState = False, dropdownState = NoDropdowns}
+            |> Navbar.view { toggleMenuState = False, dropdownState = NoDropdowns }
         , basicExampleCode
         , Component.wrappedText "Because of the flags, you'll also need to configure an index.html file. Below is a simple setup you can use yourself."
         , basicHtmlCode
         ]
 
-basicExampleCode : UiElement Msg 
-basicExampleCode=
+
+basicExampleCode : UiElement Msg
+basicExampleCode =
     """
 import Browser
 import Browser.Events
@@ -288,7 +294,7 @@ subscriptions _ =
         |> Util.uiHighlightCode "elm"
 
 
-basicHtmlCode : UiElement Msg 
+basicHtmlCode : UiElement Msg
 basicHtmlCode =
     """
 <!DOCTYPE html>
@@ -320,11 +326,12 @@ basicHtmlCode =
         |> Util.uiHighlightCode "html"
 
 
-type ComplexDropdownState =
-    AllClosed
+type ComplexDropdownState
+    = AllClosed
     | ThemeSelectOpen
 
-complexExample : UiElement Msg 
+
+complexExample : UiElement Msg
 complexExample =
     UiFramework.flatMap
         (\context ->
@@ -364,7 +371,7 @@ complexExample =
         )
 
 
-complexNavbarCode : UiElement Msg 
+complexNavbarCode : UiElement Msg
 complexNavbarCode =
     """
 import UiFramework.Dropdown as Dropdown
@@ -471,6 +478,8 @@ view model =
             )"""
         |> Util.uiHighlightCode "elm"
 
+
+
 -- UPDATE
 
 
@@ -489,7 +498,7 @@ update sharedState msg model =
             ( model, Cmd.none, SharedState.NoUpdate )
 
         NavigateTo route ->
-            ( model, Util.navigate sharedState.navKey route , SharedState.NoUpdate )
+            ( model, Util.navigate sharedState.navKey route, SharedState.NoUpdate )
 
         ToggleDropdown ->
             let
@@ -504,13 +513,13 @@ update sharedState msg model =
             , Cmd.none
             , SharedState.NoUpdate
             )
-        
+
         ToggleComplexNav ->
             ( { model | complexNavMenuState = not model.complexNavMenuState }
             , Cmd.none
             , SharedState.NoUpdate
             )
-        
+
         ChangeNavTheme role ->
             ( { model | complexNavTheme = role, complexNavDropdownState = AllClosed }
             , Cmd.none

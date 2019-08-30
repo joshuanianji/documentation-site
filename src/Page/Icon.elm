@@ -3,21 +3,21 @@ module Page.Icon exposing (Context, Model, Msg(..), init, update, view)
 {-| Alert component
 -}
 
-
-import Element exposing (Color, Element, fill, height, width, spacing)
+import Element exposing (Color, Element, fill, height, spacing, width)
+import FontAwesome.Brands
+import FontAwesome.Solid
 import Routes
 import SharedState exposing (SharedState, SharedStateUpdate(..))
 import UiFramework exposing (UiContextual, WithContext, toElement)
+import UiFramework.Button as Button
 import UiFramework.Container as Container
 import UiFramework.Icon as Icon
+import UiFramework.Navbar as Navbar
 import UiFramework.Types exposing (Role(..))
 import UiFramework.Typography as Typography
 import Util
 import View.Component as Component exposing (componentNavbar, viewHeader)
-import FontAwesome.Solid
-import FontAwesome.Brands
-import UiFramework.Navbar as Navbar
-import UiFramework.Button as Button
+
 
 
 -- UIFRAMEWORK TYPE
@@ -96,6 +96,7 @@ content =
         , realLifeUses
         ]
 
+
 basicExample : UiElement Msg
 basicExample =
     UiFramework.uiColumn
@@ -107,6 +108,7 @@ basicExample =
         , UiFramework.fromElement (\_ -> Icon.view FontAwesome.Solid.cog)
         , basicExampleCode
         ]
+
 
 basicExampleCode : UiElement Msg
 basicExampleCode =
@@ -120,7 +122,8 @@ cogIcon =
     UiFramework.fromElement (\\_ -> Icon.view FontAwesome.Solid.cog)"""
         |> Util.uiHighlightCode "elm"
 
-gettingStarted : UiElement Msg 
+
+gettingStarted : UiElement Msg
 gettingStarted =
     UiFramework.uiColumn
         [ width fill
@@ -132,8 +135,8 @@ gettingStarted =
         ]
 
 
-gettingStartedCode : UiElement Msg 
-gettingStartedCode=
+gettingStartedCode : UiElement Msg
+gettingStartedCode =
     """
 import Browser
 import FontAwesome.Styles
@@ -149,10 +152,12 @@ viewApplication model sharedState =
     }"""
         |> Util.uiHighlightCode "elm"
 
-type DropdownState 
+
+type DropdownState
     = AllDown
 
-realLifeUses : UiElement Msg 
+
+realLifeUses : UiElement Msg
 realLifeUses =
     UiFramework.uiColumn
         [ width fill
@@ -160,7 +165,7 @@ realLifeUses =
         ]
         [ Component.title "Using Icons"
         , Component.wrappedText "Using icons may seem rather painful by itself, but they are easily implemented in Navbars and Buttons, for example."
-        , UiFramework.uiRow 
+        , UiFramework.uiRow
             [ spacing 8 ]
             [ Button.default
                 |> Button.withLabel "Github"
@@ -170,7 +175,8 @@ realLifeUses =
                 |> Button.withLabel "Check"
                 |> Button.withIcon FontAwesome.Solid.check
                 |> Button.withRole Success
-                |> Button.view ]
+                |> Button.view
+            ]
         , iconButtonCode
         , Navbar.default NoOp
             |> Navbar.withBrand (Element.text "Navbar")
@@ -185,12 +191,13 @@ realLifeUses =
                     |> Navbar.withMenuIcon FontAwesome.Solid.addressBook
                     |> Navbar.withMenuTitle "Contact"
                 ]
-            |> Navbar.view {toggleMenuState = False, dropdownState = AllDown}
+            |> Navbar.view { toggleMenuState = False, dropdownState = AllDown }
         , iconNavbarCode
         ]
 
-iconButtonCode : UiElement Msg 
-iconButtonCode=
+
+iconButtonCode : UiElement Msg
+iconButtonCode =
     """
 import FontAwesome.Brands
 import FontAwesome.Solid
@@ -212,7 +219,8 @@ iconButtons =
         ]"""
         |> Util.uiHighlightCode "elm"
 
-iconNavbarCode : UiElement Msg 
+
+iconNavbarCode : UiElement Msg
 iconNavbarCode =
     """
 import UiFramework.Navbar as Navbar
@@ -242,6 +250,8 @@ Navbar.default NoOp
     |> Navbar.view {toggleMenuState = False, dropdownState = AllDown}"""
         |> Util.uiHighlightCode "elm"
 
+
+
 -- UPDATE
 
 
@@ -257,4 +267,4 @@ update sharedState msg model =
             ( model, Cmd.none, NoUpdate )
 
         NavigateTo route ->
-            ( model, Util.navigate sharedState.navKey route , NoUpdate )
+            ( model, Util.navigate sharedState.navKey route, NoUpdate )
