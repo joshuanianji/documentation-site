@@ -1,9 +1,9 @@
 module Page.Navbar exposing (Context, Model, Msg(..), init, update, view)
 
-{-| Alert component
+{-| Navbar component
 -}
 
-import Browser.Navigation as Navigation
+
 import Element exposing (Color, Element, fill, height, width,spacing)
 import Routes
 import SharedState exposing (SharedState, SharedStateUpdate)
@@ -78,7 +78,7 @@ view sharedState model =
         [ width fill, height fill ]
         [ viewHeader
             { title = "Navbar"
-            , description = "A concise header for branding, navigation, and other elements/"
+            , description = "A concise header for branding, navigation, and other elements."
             }
         , Container.simple
             [ Element.paddingXY 0 64 ]
@@ -251,7 +251,8 @@ view model =
     Navbar.default ToggleNavbar
         |> Navbar.withBrand (Element.text "Navbar")
         |> Navbar.withMenuItems
-            [ Navbar.linkItem NoOp -- Navbar.linkItem accepts a msg type that dictates its action when clicked
+            -- Navbar.linkItem accepts a msg type that triggers when the screen width is too small
+            [ Navbar.linkItem NoOp 
                 |> Navbar.withMenuIcon FontAwesome.Solid.home
                 |> Navbar.withMenuTitle "Home"
             , Navbar.linkItem NoOp
@@ -440,7 +441,7 @@ view model =
         |> Navbar.withBrand (Element.text "Navbar")
         |> Navbar.withBackground model.navTheme
         |> Navbar.withMenuItems
-            [ Navbar.linkItem NoOp -- Navbar.linkItem accepts a msg type that dictates its action when clicked
+            [ Navbar.linkItem NoOp
                 |> Navbar.withMenuIcon FontAwesome.Solid.home
                 |> Navbar.withMenuTitle "Home"
             , Navbar.linkItem NoOp
