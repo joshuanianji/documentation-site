@@ -96,7 +96,7 @@ urlParser =
         [ Url.map Home Url.top
         , Url.map GettingStarted (Url.s "getting-started")
         , Url.map Button (Url.s "button")
-        , Url.map Badge (Url.s "bsadge")
+        , Url.map Badge (Url.s "badge")
         , Url.map Container (Url.s "container")
         , Url.map Dropdown (Url.s "dropdown")
         , Url.map Icon (Url.s "icon")
