@@ -1,6 +1,8 @@
 module View.Component exposing (Header, componentNavbar, section, title, viewHeader, wrappedText, code)
 
--- I need to rename this!
+{-| Reusable view functions for each Component page
+    I need to rename this!
+-}
 
 import Element exposing (Color, fill, height, width, Attribute)
 import Element.Background as Background
