@@ -20,7 +20,6 @@ import Page.Navbar as Navbar
 import Page.NotFound as NotFound
 import Page.Pagination as Pagination
 import Page.Table as Table
-import Page.UiToasty as UiToasty
 import Page.Typography as Typography
 import Ports
 import Routes exposing (Route(..))
@@ -29,11 +28,8 @@ import Task
 import UiFramework exposing (WithContext, toElement)
 import UiFramework.Navbar
 import UiFramework.Types exposing (Role(..))
-import UiFramework.Toasty
 import Url
 import Util
-import Toasty
-import Toasty.Defaults
 
 
 
@@ -46,7 +42,6 @@ type alias Model =
     , navKey : Nav.Key
     , dropdownMenuState : DropdownMenuState
     , toggleMenuState : Bool
-    , toasties : Toasty.Stack Toasty.Defaults.Toast
     }
 
 
@@ -62,7 +57,6 @@ type Page
     | NavbarPage Navbar.Model
     | PaginationPage Pagination.Model
     | TablePage Table.Model
-    | UiToastyPage UiToasty.Model
     | TypographyPage Typography.Model
     | NotFoundPage NotFound.Model
 
@@ -87,7 +81,6 @@ init url key =
       , navKey = key
       , dropdownMenuState = AllClosed
       , toggleMenuState = False
-      , toasties = Toasty.initialState
       }
     , (Task.perform identity << Task.succeed) <| UrlChanged url
     )
@@ -147,9 +140,6 @@ tabBarTitle model =
         TablePage _ ->
             "Table"
 
-        UiToastyPage _ ->
-            "UiToasty"
-
         TypographyPage _ ->
             "Typography"
 
@@ -175,7 +165,6 @@ view toMsg model sharedState =
         (content model sharedState)
         |> Element.layout
             [ Element.inFront <| navbar model sharedState
-            , Element.inFront <| UiFramework.Toasty.view ToastyMsg model.toasties
             , Font.family themeConfig.fontConfig.fontFamily
             ]
         |> Html.map toMsg
@@ -274,10 +263,6 @@ content model sharedState =
             Table.view sharedState pageModel
                 |> Element.map TableMsg
 
-        UiToastyPage pageModel ->
-            UiToasty.view sharedState pageModel
-                |> Element.map UiToastyMsg
-
         TypographyPage pageModel ->
             Typography.view sharedState pageModel
                 |> Element.map TypographyMsg
@@ -305,10 +290,8 @@ type Msg
     | NavbarMsg Navbar.Msg
     | PaginationMsg Pagination.Msg
     | TableMsg Table.Msg
-    | UiToastyMsg UiToasty.Msg
     | TypographyMsg Typography.Msg
     | NotFoundMsg NotFound.Msg
-    | ToastyMsg (Toasty.Msg Toasty.Defaults.Toast)
     | SelectTheme Theme
     | ToggleDropdown
     | ToggleMenu
@@ -382,10 +365,6 @@ update sharedState msg model =
             Table.update sharedState subMsg subModel
                 |> updateWith TablePage TableMsg model
 
-        ( UiToastyMsg subMsg, UiToastyPage subModel ) ->
-            UiToasty.update sharedState subMsg subModel
-                |> updateWith UiToastyPage UiToastyMsg model
-
         ( TypographyMsg subMsg, TypographyPage subModel ) ->
             Typography.update sharedState subMsg subModel
                 |> updateWith TypographyPage TypographyMsg model
@@ -393,10 +372,6 @@ update sharedState msg model =
         ( NotFoundMsg subMsg, NotFoundPage subModel ) ->
             NotFound.update sharedState subMsg subModel
                 |> updateWith NotFoundPage NotFoundMsg model
-        
-        ( ToastyMsg subMsg, _ ) ->
-            Toasty.update Toasty.Defaults.config ToastyMsg subMsg model
-                |> Util.flip Util.tupleExtend SharedState.NoUpdate
 
         ( SelectTheme theme, _ ) ->
             ( { model | dropdownMenuState = AllClosed }
@@ -436,23 +411,9 @@ updateWith :
     -> ( subModel, Cmd subMsg, SharedStateUpdate )
     -> ( Model, Cmd Msg, SharedStateUpdate )
 updateWith toPage toMsg model ( subModel, subCmd, subSharedStateUpdate ) =
-    let
-        ( newModel, newCmd, newSharedStateUpdate ) =
-            case subSharedStateUpdate of
-                SharedState.ShowToasty toast ->
-                    ( model, Cmd.none )
-                        |> Toasty.addToast Toasty.Defaults.config ToastyMsg toast 
-                        |> Util.flip Util.tupleExtend SharedState.NoUpdate
-                    
-                _ ->
-                    ( model, Cmd.none, subSharedStateUpdate )
-    in
-    ( { newModel | currentPage = toPage subModel }
-    , Cmd.batch
-        [ newCmd
-        , Cmd.map toMsg subCmd
-        ]
-    , newSharedStateUpdate
+    ( { model | currentPage = toPage subModel }
+    , Cmd.map toMsg subCmd
+    , subSharedStateUpdate
     )
 
 
@@ -491,9 +452,6 @@ navigateTo route sharedState model =
 
         Table ->
             Table.init |> initWith TablePage TableMsg model SharedState.NoUpdate
-
-        UiToasty ->
-            UiToasty.init |> initWith UiToastyPage UiToastyMsg model SharedState.NoUpdate
 
         Typography ->
             Typography.init |> initWith TypographyPage TypographyMsg model SharedState.NoUpdate

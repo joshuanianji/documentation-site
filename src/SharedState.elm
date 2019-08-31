@@ -4,7 +4,6 @@ import Browser.Navigation
 import Element exposing (Color, Device)
 import UiFramework.ColorUtils as ColorUtils
 import UiFramework.Configuration exposing (ThemeConfig, defaultThemeConfig)
-import Toasty.Defaults
 
 type alias SharedState =
     { navKey : Browser.Navigation.Key -- used by other pages to navigate (through Browser.Navigation.pushUrl)
@@ -36,7 +35,6 @@ getThemeConfig theme =
 type SharedStateUpdate
     = UpdateDevice Device
     | UpdateTheme Theme
-    | ShowToasty Toasty.Defaults.Toast
     | NoUpdate
 
 
@@ -57,9 +55,6 @@ update sharedState updateMsg =
 
         UpdateTheme theme ->
             { sharedState | theme = theme }
-        
-        ShowToasty _ ->
-            sharedState
 
         NoUpdate ->
             sharedState

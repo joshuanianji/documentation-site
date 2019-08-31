@@ -1,6 +1,6 @@
 # Demos
 
-The Navbar, Pagination and Toasty modules all need the entire model-view-update to function, and thus I've given the user the full Main.elm code, as well as the Index.html code to use as a demo.
+The Navbar and Pagination modules all need the entire model-view-update to function, and thus I've given the user the full Main.elm code, as well as the Index.html code to use as a demo.
 
 This folder stores these demos because I had to compile them to make sure they ran correctly.
 

@@ -17,7 +17,6 @@ type Route
     | Navbar
     | Pagination
     | Table
-    | UiToasty
     | Typography
 
 
@@ -63,9 +62,6 @@ toUrlString route =
                 Table ->
                     [ "table" ]
 
-                UiToasty ->
-                    [ "uitoasty" ]
-
                 Typography ->
                     [ "typography" ]
 
@@ -103,7 +99,6 @@ urlParser =
         , Url.map Navbar (Url.s "navbar")
         , Url.map Pagination (Url.s "pagination")
         , Url.map Table (Url.s "table")
-        , Url.map UiToasty (Url.s "uitoasty")
         , Url.map Typography (Url.s "typography")
         , Url.map Alert (Url.s "alert")
         ]
