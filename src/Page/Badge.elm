@@ -147,7 +147,11 @@ configuration =
         [ UiFramework.uiColumn
             [ spacing 16 ]
             [ Component.title "Configurations"
-            , Component.wrappedText "When configuring, we use pipelines to build up our badge, starting from the default function."
+            , UiFramework.uiParagraph []
+                [ Util.text "When configuring, we use pipelines to build up our badge, starting from the default function, "
+                , Component.code "Badge.default"
+                ]
+
             ]
         , configExampleCode
         , attributeConfigs
@@ -218,7 +222,11 @@ rolesAndLabelConfig =
         , width fill
         ]
         [ Component.section "Roles and Labels"
-        , Component.wrappedText "These pipeline functions bring the basic functionality to badge customization. By default, the role of a badge is the Primary role, and the label is an empty string."
+        , UiFramework.uiParagraph []
+            [ Util.text "These pipeline functions bring the basic functionality to badge customization. By default, the role of a badge is the "
+            , Component.code "Primary" 
+            , Util.text " role, and the label is an empty string."
+            ]
         , Badge.simple Secondary "Secondary badge!"
         , rolesAndLabelsConfigCode
         ]
@@ -249,7 +257,14 @@ pillConfig =
         , width fill
         ]
         [ Component.section "Pills or no pill"
-        , Component.wrappedText "A badge can have a \"pill\" config set to true, where the corners are more rounded. By default this is set to false."
+        , UiFramework.uiParagraph [] 
+            [ Util.text "A badge can have a "
+           , Component.code "pill"
+            , Util.text " config set to "
+            , Component.code "True"
+            , Util.text ", where the corners are more rounded. By default this is set to "
+            , Component.code "False"
+            , Util.text "."]
         , Badge.default
             |> Badge.withLabel "Pill Badge"
             |> Badge.withPill

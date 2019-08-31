@@ -156,7 +156,10 @@ configuration =
         [ UiFramework.uiColumn
             [ spacing 16 ]
             [ Component.title "Configurations"
-            , Component.wrappedText "When configuring, we use pipelines to build up our badge, starting from the default function."
+            , UiFramework.uiParagraph []
+                [Util.text "When configuring, we use pipelines to build up our badge, starting from the default function, "
+                , Component.code "Alert.default"
+                ]
             ]
         , configExampleCode
         , sizeConfigs
@@ -302,7 +305,11 @@ childConfigs =
         , width fill
         ]
         [ Component.section "Child elements"
-        , Component.wrappedText "Alerts allow any UiElement node to be a child"
+        , UiFramework.uiParagraph []
+            [ Util.text "Alerts allow any "
+            , Component.code "UiElement"
+            , Util.text " node to be a child"
+            ]
         , Alert.simple Success <|
             UiFramework.uiColumn
                 [ Element.spacing 8 ]
@@ -311,7 +318,7 @@ childConfigs =
                     [ Typography.textLead [] (Util.text "Yay!")
                     , Badge.simple Success "Certified Bruh Moment"
                     ]
-                , Util.text "Congratulations!"
+                , Util.text "Congratulations! You've made a fancy alert!"
                 ]
         , childCode
         ]
