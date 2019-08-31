@@ -37,18 +37,6 @@ import Toasty.Defaults
 
 
 
--- UiFramework Type
-
-
-type alias UiElement msg =
-    WithContext Context msg
-
-
-type alias Context =
-    {}
-
-
-
 -- MODEL
 
 
