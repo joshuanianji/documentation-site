@@ -108,6 +108,6 @@ routeNameList =
     , ( Navbar, "Navbar" )
     , ( Pagination, "Pagination" )
     , ( Table, "Table" )
-    , ( Toasty, "Toasty" )
+    , ( UiToasty, "UiToasty" )
     , ( Typography, "Typography" )
     ]

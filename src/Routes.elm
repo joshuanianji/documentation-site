@@ -17,7 +17,7 @@ type Route
     | Navbar
     | Pagination
     | Table
-    | Toasty
+    | UiToasty
     | Typography
 
 
@@ -43,31 +43,31 @@ toUrlString route =
                     [ "alert" ]
 
                 Badge ->
-                    [ "Badge" ]
+                    [ "badge" ]
 
                 Container ->
-                    [ "Container" ]
+                    [ "container" ]
 
                 Dropdown ->
-                    [ "Dropdown" ]
+                    [ "dropdown" ]
 
                 Icon ->
-                    [ "Icon" ]
+                    [ "icon" ]
 
                 Navbar ->
-                    [ "Navbar" ]
+                    [ "navbar" ]
 
                 Pagination ->
-                    [ "Pagination" ]
+                    [ "pagination" ]
 
                 Table ->
-                    [ "Table" ]
+                    [ "table" ]
 
-                Toasty ->
-                    [ "Toasty" ]
+                UiToasty ->
+                    [ "uitoasty" ]
 
                 Typography ->
-                    [ "Typography" ]
+                    [ "typography" ]
 
                 NotFound ->
                     [ "oops" ]
@@ -96,14 +96,14 @@ urlParser =
         [ Url.map Home Url.top
         , Url.map GettingStarted (Url.s "getting-started")
         , Url.map Button (Url.s "button")
-        , Url.map Badge (Url.s "Badge")
-        , Url.map Container (Url.s "Container")
-        , Url.map Dropdown (Url.s "Dropdown")
-        , Url.map Icon (Url.s "Icon")
-        , Url.map Navbar (Url.s "Navbar")
-        , Url.map Pagination (Url.s "Pagination")
-        , Url.map Table (Url.s "Table")
-        , Url.map Toasty (Url.s "Toasty")
-        , Url.map Typography (Url.s "Typography")
+        , Url.map Badge (Url.s "bsadge")
+        , Url.map Container (Url.s "container")
+        , Url.map Dropdown (Url.s "dropdown")
+        , Url.map Icon (Url.s "icon")
+        , Url.map Navbar (Url.s "navbar")
+        , Url.map Pagination (Url.s "pagination")
+        , Url.map Table (Url.s "table")
+        , Url.map UiToasty (Url.s "uitoasty")
+        , Url.map Typography (Url.s "typography")
         , Url.map Alert (Url.s "alert")
         ]

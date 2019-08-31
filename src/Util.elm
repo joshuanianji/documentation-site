@@ -1,4 +1,4 @@
-module Util exposing (firacode, highlightCode, navigate, text, uiHighlightCode)
+module Util exposing (firacode, highlightCode, navigate, text, uiHighlightCode, flip, tupleExtend)
 
 {-| code from <https://github.com/rundis/elm-bootstrap.info/blob/master/src/Util.elm>
 -}
@@ -16,6 +16,18 @@ import UiFramework exposing (WithContext)
 text : String -> WithContext context msg
 text str =
     UiFramework.uiText (\_ -> str)
+
+
+
+
+flip : (a -> b -> c) -> (b -> a -> c)
+flip f b a =
+    f a b
+
+
+tupleExtend : ( a, b ) -> c -> ( a, b, c )
+tupleExtend ( a, b ) c =
+    ( a, b, c )
 
 
 
@@ -59,4 +71,4 @@ firacode =
 
 navigate : Navigation.Key -> Routes.Route -> Cmd msg
 navigate navKey route =
-    Navigation.pushUrl navKey (Routes.toUrlString route) |> Debug.log "navigation!"
+    Navigation.pushUrl navKey (Routes.toUrlString route) 

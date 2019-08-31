@@ -1,6 +1,9 @@
-module Page.Toasty exposing (Context, Model, Msg(..), init, update, view)
+module Page.UiToasty exposing (Context, Model, Msg(..), init, update, view)
 
-{-| Alert component
+{-| UiToasty component
+
+    I called this UiToasty because the Router module will need to deal with the actual Toasty
+    module (from pablen/toasty) and the names will get messed up
 -}
 
 import Element exposing (Color, Element, fill, height, spacing, width)
@@ -13,6 +16,8 @@ import UiFramework.Types exposing (Role(..))
 import UiFramework.Typography as Typography
 import Util
 import View.Component as Component exposing (componentNavbar, viewHeader)
+import Toasty.Defaults
+import UiFramework.Button as Button
 
 
 
@@ -74,7 +79,7 @@ view sharedState model =
                     , height fill
                     ]
                   <|
-                    componentNavbar NavigateTo Routes.Toasty
+                    componentNavbar NavigateTo Routes.UiToasty
                 , Container.simple [ width <| Element.fillPortion 6 ] <| content
                 ]
         ]
@@ -112,6 +117,7 @@ basicExample =
         ]
         [ Component.title "Basic Example"
         , Component.wrappedText "Toasties require a fair bit of setup, and they need a css file to work (https://github.com/pablen/toasty/blob/master/src/Toasty/Defaults.css), so here's a simple but fully functional bit of code that shows a toasty when a button is clicked. "
+        , Button.simple (ShowToasty <| Toasty.Defaults.Success "Success!" "Aww yeah!") "Show Toasty"
         , toastyElmCode
         , Component.wrappedText "Include the Toasty css file in your project and include the path in the Html file."
         , toastyHtmlCode
@@ -302,6 +308,7 @@ elm-live [PATH/TO/Main.elm] -- --output=elm.js"""
 type Msg
     = NoOp
     | NavigateTo Routes.Route
+    | ShowToasty Toasty.Defaults.Toast
 
 
 update : SharedState -> Msg -> Model -> ( Model, Cmd Msg, SharedStateUpdate )
@@ -312,3 +319,6 @@ update sharedState msg model =
 
         NavigateTo route ->
             ( model, Util.navigate sharedState.navKey route, NoUpdate )
+
+        ShowToasty toasty ->
+            (model, Cmd.none, SharedState.ShowToasty toasty)

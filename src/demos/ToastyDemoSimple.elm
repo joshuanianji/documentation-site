@@ -113,7 +113,7 @@ view model =
         |> UiFramework.toElement context
         -- show our toasties using "infront" so as not to disturb the layout
         |> Element.layout
-            [ Element.inFront <| UiFramework.Toasty.view ToastyMsg model.toasties ]
+            [ Element.inFront <| UiFramework.Toasty.view ToastyMsg model.toasties]
 
 
 
